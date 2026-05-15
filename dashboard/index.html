@@ -1168,6 +1168,61 @@
   <div class="spinner"></div>
 </div>
 
+<!-- Settings Panel -->
+<div class="settings-panel" id="settings-panel">
+  <div class="settings-title">
+    Settings
+    <button class="settings-close" id="settings-close">✕</button>
+  </div>
+
+  <div class="settings-group">
+    <div class="settings-group-label">Appearance</div>
+    <div class="settings-row">
+      <span class="settings-label">Dashboard title</span>
+      <input type="text" class="settings-input" id="setting-title" value="PoorJar" maxlength="30"/>
+    </div>
+    <div class="settings-row">
+      <span class="settings-label">Accent color</span>
+      <div class="settings-color-row">
+        <input type="color" class="settings-color-swatch" id="setting-color" value="#4AE3A0" title="Pick accent color"/>
+        <input type="text" class="settings-input" id="setting-color-hex" value="#4AE3A0" maxlength="7" style="width:90px;"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-group">
+    <div class="settings-group-label">Defaults</div>
+    <div class="settings-row">
+      <span class="settings-label">Default date range</span>
+      <select class="settings-input" id="setting-days" style="width:140px;">
+        <option value="7">Last 7 days</option>
+        <option value="30">Last 30 days</option>
+        <option value="0">All time</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="settings-save" id="settings-save">Save settings</button>
+
+  <hr class="settings-divider"/>
+
+  <div class="settings-group">
+    <div class="settings-group-label">Self-host</div>
+    <p class="settings-note">This dashboard is a single HTML file. Download it and host it anywhere — Netlify, GitHub Pages, your own server, or just open it locally.</p>
+    <a href="https://poorjar.com/dashboard/index.html" download="poorjar-dashboard.html" class="settings-save" style="text-decoration:none; box-sizing:border-box;">↓ Download dashboard.html</a>
+    <p class="settings-note" style="margin-top:10px;">To pre-configure credentials so the login screen never appears, add this to the top of the script in the downloaded file:</p>
+    <div class="selfhost-code" id="settings-autoconnect-snippet" style="margin-top:6px; font-size:0.65rem;"></div>
+  </div>
+
+  <hr class="settings-divider"/>
+
+  <div class="settings-group">
+    <div class="settings-group-label">Share</div>
+    <p class="settings-note">Copy a pre-connected link — anyone with it can view your dashboard without entering credentials. Only share with people you trust.</p>
+    <button class="settings-save" id="settings-copy-link" style="background:#1a1a1c; color:#4AE3A0; border:1px solid #2a2a2a;">⬡ Copy dashboard link</button>
+  </div>
+</div>
+
 <script>
   // ---- State ----
   let supabaseUrl = '';
@@ -1282,12 +1337,14 @@
     if (s.title) {
       document.title = s.title + ' — PoorJar';
       document.querySelectorAll('.topbar-logo-text').forEach(el => el.textContent = s.title);
-      document.getElementById('setting-title').value = s.title;
+      const titleEl = document.getElementById('setting-title');
+      if (titleEl) titleEl.value = s.title;
     }
     if (s.color) applyAccentColor(s.color);
     if (s.days !== undefined) {
       activeDays = s.days;
-      document.getElementById('setting-days').value = s.days;
+      const daysEl = document.getElementById('setting-days');
+      if (daysEl) daysEl.value = s.days;
     }
     return s;
   }
@@ -1949,60 +2006,4 @@
       .replace(/"/g, '&quot;');
   }
 </script>
-<!-- Settings Panel -->
-<div class="settings-panel" id="settings-panel">
-  <div class="settings-title">
-    Settings
-    <button class="settings-close" id="settings-close">✕</button>
-  </div>
-
-  <div class="settings-group">
-    <div class="settings-group-label">Appearance</div>
-    <div class="settings-row">
-      <span class="settings-label">Dashboard title</span>
-      <input type="text" class="settings-input" id="setting-title" value="PoorJar" maxlength="30"/>
-    </div>
-    <div class="settings-row">
-      <span class="settings-label">Accent color</span>
-      <div class="settings-color-row">
-        <input type="color" class="settings-color-swatch" id="setting-color" value="#4AE3A0" title="Pick accent color"/>
-        <input type="text" class="settings-input" id="setting-color-hex" value="#4AE3A0" maxlength="7" style="width:90px;"/>
-      </div>
-    </div>
-  </div>
-
-  <div class="settings-group">
-    <div class="settings-group-label">Defaults</div>
-    <div class="settings-row">
-      <span class="settings-label">Default date range</span>
-      <select class="settings-input" id="setting-days" style="width:140px;">
-        <option value="7">Last 7 days</option>
-        <option value="30">Last 30 days</option>
-        <option value="0">All time</option>
-      </select>
-    </div>
-  </div>
-
-  <button class="settings-save" id="settings-save">Save settings</button>
-
-  <hr class="settings-divider"/>
-
-  <div class="settings-group">
-    <div class="settings-group-label">Self-host</div>
-    <p class="settings-note">This dashboard is a single HTML file. Download it and host it anywhere — Netlify, GitHub Pages, your own server, or just open it locally.</p>
-    <a href="https://poorjar.com/dashboard/index.html" download="poorjar-dashboard.html" class="settings-save" style="text-decoration:none; box-sizing:border-box;">↓ Download dashboard.html</a>
-    <p class="settings-note" style="margin-top:10px;">To pre-configure credentials so the login screen never appears, add this to the top of the script in the downloaded file:</p>
-    <div class="selfhost-code" id="settings-autoconnect-snippet" style="margin-top:6px; font-size:0.65rem;"></div>
-  </div>
-
-  <hr class="settings-divider"/>
-
-  <div class="settings-group">
-    <div class="settings-group-label">Share</div>
-    <p class="settings-note">Copy a pre-connected link — anyone with it can view your dashboard without entering credentials. Only share with people you trust.</p>
-    <button class="settings-save" id="settings-copy-link" style="background:#1a1a1c; color:#4AE3A0; border:1px solid #2a2a2a;">⬡ Copy dashboard link</button>
-  </div>
-</div>
-
 </body>
-</html>
