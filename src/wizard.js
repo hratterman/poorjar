@@ -120,7 +120,18 @@
             <li>Go to your Supabase project and open the SQL editor.</li>
             <li>Run this to create the events table:</li>
           </ol>
-          <div class="config-code-snippet">CREATE TABLE poorjar_events (
+          <div class="config-code-wrap">
+            <div class="config-code-header">
+              <span class="config-code-lang">SQL</span>
+              <button class="config-copy-btn" onclick="(function(btn){
+                const sql = btn.closest('.config-code-wrap').querySelector('.config-code-snippet').innerText;
+                navigator.clipboard.writeText(sql).then(function(){
+                  btn.textContent = 'Copied!';
+                  setTimeout(function(){ btn.textContent = 'Copy'; }, 2000);
+                });
+              })(this)">Copy</button>
+            </div>
+            <div class="config-code-snippet">CREATE TABLE poorjar_events (
   id         bigint generated always as identity primary key,
   site_id    text,
   session_id text,
@@ -140,9 +151,9 @@
 -- Allow anonymous inserts (no auth required)
 ALTER TABLE poorjar_events ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "allow insert" ON poorjar_events FOR INSERT WITH CHECK (true);</div>
+          </div>
           <ol start="3">
-            <li>Go to Settings &gt; API and copy your Project URL and anon/public key.</li>
-            <li>Make sure Row Level Security is disabled for this table (or add a policy that allows inserts).</li>
+            <li>Go to <strong>Settings &gt; API</strong> and copy your Project URL and anon/public key.</li>
             <li>Paste them below.</li>
           </ol>
         </div>
