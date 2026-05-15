@@ -204,27 +204,22 @@ CREATE POLICY "allow insert" ON poorjar_events FOR INSERT WITH CHECK (true);</di
           <div class="config-code-snippet">function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    // Add headers if sheet is empty
+    // spreadsheet_id is sent by poorjar.js automatically
+    var ss = data.spreadsheet_id
+      ? SpreadsheetApp.openById(data.spreadsheet_id)
+      : SpreadsheetApp.getActiveSpreadsheet();
+    var sheet = ss.getActiveSheet();
     if (sheet.getLastRow() === 0) {
       sheet.appendRow(['site_id','session_id','type','x','y','vx','vy','vpw','vph','depth','scroll_y','timestamp','url']);
     }
     var events = data.events || [];
     events.forEach(function(ev) {
       sheet.appendRow([
-        data.site_id    || '',
-        data.session_id || '',
-        ev.type         || '',
-        ev.x            || 0,
-        ev.y            || 0,
-        ev.vx           || 0,
-        ev.vy           || 0,
-        ev.vpw          || data.vpw || 0,
-        ev.vph          || data.vph || 0,
-        ev.depth        || 0,
-        ev.scroll_y     || 0,
-        ev.timestamp    || Date.now(),
-        ev.url          || ''
+        data.site_id || '', data.session_id || '',
+        ev.type || '', ev.x||0, ev.y||0, ev.vx||0, ev.vy||0,
+        ev.vpw||data.vpw||0, ev.vph||data.vph||0,
+        ev.depth||0, ev.scroll_y||0,
+        ev.timestamp||Date.now(), ev.url||''
       ]);
     });
     return ContentService
