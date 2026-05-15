@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acme Cloud — Enterprise SaaS Platform</title>
+<script
+  src="https://poorjar.com/poorjar.js"
+  data-endpoint="https://qidjrruxrazbitqdzogg.supabase.co/rest/v1/poorjar_events"
+  data-site-id="helltest"
+  data-mode="supabase"
+  data-key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFpZGpycnV4cmF6Yml0cWR6b2dnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg4NjAzMzYsImV4cCI6MjA5NDQzNjMzNn0.H2Zou0E6T_XPzCm-3svWUEzQXKo40_gPgGXW46mk0lw"
+></script>
+<style>
+/* ── Reset & Base ─────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:       #0a0b0f;
+  --surface:  #13151c;
+  --surface2: #1a1d28;
+  --border:   #2a2d3e;
+  --accent:   #6c63ff;
+  --accent2:  #00d4aa;
+  --text:     #e8eaf6;
+  --muted:    #6b7280;
+  --danger:   #ff4757;
+  --font:     'Inter', system-ui, -apple-system, sans-serif;
+}
+html { scroll-behavior: auto; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+a { color: var(--accent); text-decoration: none; }
+button {
+  cursor: pointer;
+  font-family: var(--font);
+  border: none;
+  outline: none;
+}
+
+/* ── Sticky Header ────────────────────────────── */
+#header {
+  position: sticky;
+  top: 0;
+  z-index: 900;
+  background: rgba(10,11,15,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 64px;
+}
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+nav { display: flex; gap: 2rem; align-items: center; }
+nav a {
+  color: var(--muted);
+  font-size: 0.9rem;
+  transition: color .2s;
+}
+nav a:hover { color: var(--text); }
+.nav-cta {
+  background: var(--accent);
+  color: #fff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: opacity .2s;
+}
+.nav-cta:hover { opacity: 0.85; }
+
+/* ── Sections ─────────────────────────────────── */
+section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+  position: relative;
+}
+.section-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+h1, h2 { letter-spacing: -0.03em; }
+h1 { font-size: clamp(2.5rem, 6vw, 5rem); font-weight: 800; line-height: 1.05; }
+h2 { font-size: clamp(1.8rem, 4vw, 3rem); font-weight: 700; }
+.subtext { color: var(--muted); font-size: 1.1rem; max-width: 520px; text-align: center; margin-top: 1rem; }
+
+/* ── Hero ─────────────────────────────────────── */
+#hero {
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(108,99,255,0.18) 0%, transparent 70%),
+    var(--bg);
+  text-align: center;
+  gap: 0;
+}
+#hero h1 {
+  background: linear-gradient(135deg, #fff 40%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  max-width: 900px;
+}
+.hero-actions { display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; justify-content: center; }
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  padding: 0.85rem 2rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: transform .2s, opacity .2s;
+}
+.btn-primary:hover { transform: translateY(-2px); opacity: 0.9; }
+.btn-secondary {
+  background: var(--surface2);
+  color: var(--text);
+  padding: 0.85rem 2rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  transition: background .2s;
+}
+.btn-secondary:hover { background: var(--surface); }
+
+/* Fake iframe embed */
+.video-wrapper {
+  margin-top: 3rem;
+  width: min(720px, 90vw);
+  aspect-ratio: 16/9;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+  position: relative;
+}
+.video-wrapper iframe {
+  width: 100%; height: 100%;
+  border: none;
+}
+
+/* ── Features ─────────────────────────────────── */
+#features { background: var(--surface); }
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 1100px;
+  margin-top: 3rem;
+}
+.feature-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+  transition: transform .2s, border-color .2s;
+}
+.feature-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.feature-card h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+.feature-card p  { color: var(--muted); font-size: 0.9rem; }
+
+/* Tab panel */
+.tab-bar { display: flex; gap: 0.5rem; margin-top: 2.5rem; }
+.tab-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 0.5rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  transition: all .2s;
+}
+.tab-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.tab-content {
+  display: none;
+  max-width: 700px;
+  width: 100%;
+  margin-top: 1.5rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+.tab-content.active { display: block; }
+
+/* Code preview scrollable box */
+.code-box {
+  width: min(700px, 90vw);
+  height: 200px;
+  overflow-y: scroll;
+  background: #060810;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  font-family: 'Menlo', 'Consolas', monospace;
+  font-size: 0.78rem;
+  color: #a5d6a7;
+  margin-top: 1.5rem;
+  white-space: pre;
+}
+
+/* Drag-and-drop zone */
+.dnd-zone {
+  width: min(600px, 90vw);
+  height: 120px;
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 1.5rem;
+  transition: border-color .2s, background .2s;
+}
+.dnd-zone.drag-over { border-color: var(--accent); background: rgba(108,99,255,0.08); }
+
+/* Form inputs */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: min(400px, 90vw);
+}
+.input-group label { font-size: 0.8rem; color: var(--muted); }
+.input-group input[type="text"],
+.input-group input[type="email"] {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  width: 100%;
+}
+.input-group input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+.input-group input[type="range"] { accent-color: var(--accent); width: 100%; }
+.checkbox-label {
+  display: flex; align-items: center; gap: 0.6rem;
+  color: var(--muted); font-size: 0.9rem; cursor: pointer;
+}
+.checkbox-label input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; }
+
+/* ── Pricing ──────────────────────────────────── */
+#pricing { background: var(--bg); }
+.pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  max-width: 1000px;
+  width: 100%;
+  margin-top: 3rem;
+}
+.pricing-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  position: relative;
+  transition: transform .2s;
+}
+.pricing-card.featured {
+  border-color: var(--accent);
+  background: linear-gradient(180deg, rgba(108,99,255,0.12) 0%, var(--surface) 100%);
+}
+.pricing-card.featured::before {
+  content: 'Most Popular';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.85rem;
+  border-radius: 999px;
+}
+.pricing-card:hover { transform: translateY(-4px); }
+.price { font-size: 3rem; font-weight: 800; margin: 1rem 0; }
+.price span { font-size: 1rem; font-weight: 400; color: var(--muted); }
+.pricing-features { list-style: none; margin: 1.5rem 0; text-align: left; }
+.pricing-features li { padding: 0.4rem 0; color: var(--muted); font-size: 0.9rem; }
+.pricing-features li::before { content: '✓  '; color: var(--accent2); }
+
+/* ── Testimonials ─────────────────────────────── */
+#testimonials { background: var(--surface); }
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  max-width: 1100px;
+  width: 100%;
+  margin-top: 3rem;
+}
+.testimonial-card {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 2rem;
+}
+.testimonial-card p { color: var(--muted); font-size: 0.95rem; font-style: italic; }
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.25rem;
+}
+.avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.85rem; color: #fff;
+}
+.testimonial-author div span {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+/* Async-loaded section */
+#lazy-section {
+  background: var(--bg);
+  min-height: 100vh;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity .6s, transform .6s;
+}
+#lazy-section.revealed { opacity: 1; transform: none; }
+
+/* ── Contact ──────────────────────────────────── */
+#contact { background: var(--surface); }
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: min(480px, 90vw);
+  margin-top: 2.5rem;
+}
+.contact-form textarea {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 0.9rem;
+  resize: vertical;
+  min-height: 120px;
+}
+.contact-form textarea:focus { outline: 2px solid var(--accent); border-color: transparent; }
+.contact-form .btn-primary { width: 100%; text-align: center; }
+
+/* Infinite scroll sentinel */
+#scroll-sentinel { height: 1px; }
+.infinite-block {
+  width: min(700px, 90vw);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-top: 1rem;
+  animation: fadeIn .4s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* ── Modal ────────────────────────────────────── */
+#modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+#modal-overlay.open { display: flex; }
+#modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 2.5rem;
+  width: min(500px, 90vw);
+  position: relative;
+}
+#modal h3 { font-size: 1.5rem; margin-bottom: 0.75rem; }
+#modal p  { color: var(--muted); font-size: 0.95rem; }
+#modal-close {
+  position: absolute;
+  top: 1.25rem; right: 1.25rem;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+}
+#modal-close:hover { color: var(--text); }
+
+/* Absolutely positioned overlay element */
+#floating-overlay {
+  position: absolute;
+  top: 20px; right: 20px;
+  background: linear-gradient(135deg, rgba(108,99,255,0.2), rgba(0,212,170,0.2));
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 0.6rem 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--accent2);
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Floating CTA (CSS transform) */
+#floating-cta {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 500;
+  transform: translateY(0);
+  transition: transform .3s;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  color: #fff;
+  padding: 0.85rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: 0 8px 32px rgba(108,99,255,0.4);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+#floating-cta:hover { transform: translateY(-4px) scale(1.04); }
+#floating-cta .dot {
+  width: 8px; height: 8px;
+  background: #fff;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+/* ── Test Console ─────────────────────────────── */
+#pj-console {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  z-index: 9999;
+  width: 380px;
+  font-family: 'Menlo', 'Consolas', monospace;
+  font-size: 0.72rem;
+  background: rgba(6,8,16,0.97);
+  border: 1px solid var(--accent);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.8);
+}
+#pj-console-header {
+  background: rgba(108,99,255,0.25);
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid var(--border);
+}
+#pj-console-header span { color: var(--accent); font-weight: 700; font-size: 0.8rem; }
+#pj-console-header .badge {
+  background: var(--accent);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+}
+#pj-console-body { display: block; }
+#pj-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+}
+.pj-tab {
+  flex: 1;
+  padding: 0.4rem;
+  text-align: center;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: all .15s;
+}
+.pj-tab:hover { color: var(--text); }
+.pj-tab.active { color: var(--accent); border-bottom: 2px solid var(--accent); margin-bottom: -1px; }
+.pj-panel { display: none; }
+.pj-panel.active { display: block; }
+#pj-log {
+  height: 200px;
+  overflow-y: auto;
+  padding: 0.5rem;
+}
+.pj-entry {
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pj-entry.click     { color: #64b5f6; }
+.pj-entry.rage_click{ color: var(--danger); font-weight: 700; }
+.pj-entry.scroll    { color: #a5d6a7; }
+.pj-entry.dwell     { color: #ffb74d; }
+.pj-entry.mousemove { color: #ce93d8; }
+.pj-entry.flush     { color: var(--accent2); font-style: italic; }
+#pj-stats {
+  padding: 0.75rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+.pj-stat {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.6rem;
+  text-align: center;
+}
+.pj-stat-value { font-size: 1.4rem; font-weight: 800; color: var(--accent); display: block; }
+.pj-stat-label { font-size: 0.6rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+#pj-flush-btn {
+  width: calc(100% - 1rem);
+  margin: 0 0.5rem 0.5rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.45rem;
+  font-family: 'Menlo', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+}
+#pj-flush-btn:hover { opacity: 0.85; }
+#pj-checklist {
+  padding: 0.5rem 0.75rem;
+  height: 200px;
+  overflow-y: auto;
+}
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: var(--muted);
+  font-size: 0.68rem;
+}
+.check-item .ci-status { flex-shrink: 0; width: 12px; }
+.check-item.done { color: var(--accent2); }
+.check-item.done .ci-status::before { content: '✓'; color: var(--accent2); }
+.check-item:not(.done) .ci-status::before { content: '○'; color: var(--muted); }
+
+/* Hidden section revealed on button click */
+#surprise-section {
+  display: none;
+  min-height: 50vh;
+  background: linear-gradient(135deg, rgba(0,212,170,0.08), rgba(108,99,255,0.08));
+  border-top: 1px solid var(--border);
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+#surprise-section.visible { display: flex; }
+
+/* Synthetic click target */
+#synth-target {
+  background: var(--surface2);
+  border: 2px solid var(--accent);
+  border-radius: 12px;
+  padding: 1rem 2rem;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+/* Async content placeholders */
+.async-placeholder {
+  width: min(600px, 90vw);
+  height: 80px;
+  background: linear-gradient(90deg, var(--surface2) 25%, var(--surface) 50%, var(--surface2) 75%);
+  background-size: 200% 100%;
+  border-radius: 12px;
+  margin-top: 1rem;
+  animation: shimmer 1.5s infinite;
+}
+@keyframes shimmer { to { background-position: -200% 0; } }
+.async-loaded {
+  width: min(600px, 90vw);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  margin-top: 1rem;
+  animation: fadeIn .4s ease;
+}
+.async-loaded h4 { margin-bottom: 0.5rem; color: var(--accent2); font-size: 0.9rem; }
+.async-loaded p  { color: var(--muted); font-size: 0.85rem; }
+
+/* Interaction buttons */
+.action-row { display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1.5rem; justify-content: center; }
+.action-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 0.6rem 1.25rem;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all .2s;
+}
+.action-btn:hover { border-color: var(--accent); color: var(--accent); }
+.action-btn.danger { border-color: var(--danger); color: var(--danger); }
+
+/* Loader for infinite scroll */
+#infinite-loader {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.8rem;
+  padding: 1.5rem;
+  display: none;
+}
+#infinite-loader.visible { display: block; }
+</style>
+</head>
+<body>
+
+<!-- ── Sticky Header ─────────────────────────── -->
+<header id="header">
+  <div class="logo">Acme Cloud</div>
+  <nav>
+    <a href="#features">Features</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#testimonials">Testimonials</a>
+    <a href="#contact">Contact</a>
+    <button class="nav-cta" id="header-demo-btn">Open Demo</button>
+  </nav>
+</header>
+
+<!-- ── Modal ─────────────────────────────────── -->
+<div id="modal-overlay">
+  <div id="modal">
+    <button id="modal-close">✕</button>
+    <h3>Book a Demo</h3>
+    <p>See how Acme Cloud can transform your enterprise workflow. Our team will walk you through every feature.</p>
+    <div class="contact-form" style="margin-top:1.5rem">
+      <div class="input-group">
+        <label>Work Email</label>
+        <input type="email" placeholder="you@company.com">
+      </div>
+      <div class="input-group">
+        <label>Company Name</label>
+        <input type="text" placeholder="Acme Corp">
+      </div>
+      <button class="btn-primary" id="modal-submit">Schedule Demo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Floating CTA (CSS transform element) ──── -->
+<button id="floating-cta" onclick="document.getElementById('modal-overlay').classList.add('open')">
+  <span class="dot"></span>
+  Get Started
+</button>
+
+<!-- ── SECTION 1: Hero ────────────────────────── -->
+<section id="hero">
+  <div id="floating-overlay">PoorJar Hell Test v1.0</div>
+  <p class="section-label">Enterprise Infrastructure Platform</p>
+  <h1>The cloud platform<br>that never sleeps</h1>
+  <p class="subtext">Acme Cloud delivers 99.999% uptime, real-time analytics, and infinite scale for the world's most demanding teams.</p>
+
+  <div class="hero-actions">
+    <button class="btn-primary" id="hero-cta">Start Free Trial</button>
+    <button class="btn-secondary" id="open-modal-btn">Watch Demo</button>
+  </div>
+
+  <!-- Fake iframe embed -->
+  <div class="video-wrapper">
+    <iframe src="about:blank" title="Product Demo" id="demo-iframe"
+      srcdoc="<html><body style='margin:0;background:linear-gradient(135deg,#1a1d28,#0a0b0f);display:flex;align-items:center;justify-content:center;height:100vh;color:#6c63ff;font-family:sans-serif;font-size:1.5rem;font-weight:700;'>▶ Product Demo</body></html>">
+    </iframe>
+  </div>
+
+  <!-- Capture:true + stopPropagation test zone -->
+  <div style="margin-top:2rem; text-align:center;">
+    <p style="color:var(--muted);font-size:0.8rem;margin-bottom:0.5rem;">
+      ⚡ Capture hell zone — this div has a capture listener calling stopPropagation:
+    </p>
+    <button id="capture-btn" class="action-btn" style="border-color:var(--danger);color:var(--danger);">
+      Click me (stopPropagation capture zone)
+    </button>
+  </div>
+</section>
+
+<!-- ── SECTION 2: Features ────────────────────── -->
+<section id="features">
+  <p class="section-label">Capabilities</p>
+  <h2>Built for scale</h2>
+  <p class="subtext">Every feature engineered to handle the edge cases your previous vendor ignored.</p>
+
+  <!-- Tab Panel -->
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="infrastructure">Infrastructure</button>
+    <button class="tab-btn" data-tab="security">Security</button>
+    <button class="tab-btn" data-tab="analytics">Analytics</button>
+  </div>
+  <div id="tab-infrastructure" class="tab-content active">
+    <strong>Global Infrastructure</strong> — Deploy across 47 regions instantly. Auto-scaling responds in milliseconds. Zero cold starts, ever. Our Anycast routing ensures your users always hit the nearest node.
+  </div>
+  <div id="tab-security" class="tab-content">
+    <strong>Zero-Trust Security</strong> — End-to-end encryption with hardware-backed keys. SOC 2 Type II, ISO 27001, and HIPAA compliant. Every API call signed and audited in real time.
+  </div>
+  <div id="tab-analytics" class="tab-content">
+    <strong>Real-Time Analytics</strong> — Sub-second query latency across petabytes of data. Custom dashboards, anomaly detection, and automated alerting baked in from day one.
+  </div>
+
+  <!-- Feature cards -->
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">⚡</div>
+      <h3>Sub-ms Latency</h3>
+      <p>Our proprietary QUIC-based transport layer delivers consistent low latency regardless of network conditions.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔒</div>
+      <h3>Zero-Trust by Default</h3>
+      <p>Every connection verified, every payload encrypted. Your data is never at rest unencrypted anywhere in our stack.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🌍</div>
+      <h3>47 Edge Regions</h3>
+      <p>From São Paulo to Singapore, your users are never more than 10ms from an Acme Cloud point of presence.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📊</div>
+      <h3>Live Observability</h3>
+      <p>Distributed tracing, log aggregation, and custom metrics all in one pane of glass. No more tab switching.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🔄</div>
+      <h3>Auto-Healing</h3>
+      <p>Self-repairing workloads that detect, isolate, and remediate failures before you even get the alert.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🤖</div>
+      <h3>AI Ops</h3>
+      <p>Predictive capacity planning and anomaly detection powered by models trained on 10 billion operational signals.</p>
+    </div>
+  </div>
+
+  <!-- Scrollable code box (overflow:hidden scroll) -->
+  <div class="code-box" id="code-box">$ acme deploy --region us-east-1 --auto-scale
+✔ Building image sha256:a1b2c3...
+✔ Pushing to registry (3.2 MB in 0.4s)
+✔ Provisioning 3 replicas across zones a, b, c
+✔ Health checks passing (all 3/3)
+✔ Traffic shifted — zero downtime
+✔ Deploy complete in 4.1s
+
+$ acme logs --follow --region us-east-1
+[2026-05-15 09:00:01] INFO  worker-1: handling 2,847 req/s
+[2026-05-15 09:00:02] INFO  worker-2: handling 2,901 req/s
+[2026-05-15 09:00:03] INFO  cache: hit rate 98.7%
+[2026-05-15 09:00:04] WARN  worker-3: GC pressure — auto-scaling +2
+[2026-05-15 09:00:05] INFO  worker-4: online (auto-scaled)
+[2026-05-15 09:00:06] INFO  worker-5: online (auto-scaled)
+[2026-05-15 09:00:07] INFO  cluster: handling 5,103 req/s
+[2026-05-15 09:00:08] INFO  cache: hit rate 99.1%
+[2026-05-15 09:00:09] INFO  p99 latency: 4.2ms
+[2026-05-15 09:00:10] INFO  p99 latency: 3.8ms
+$ _</div>
+
+  <!-- Interaction hell zone -->
+  <div class="action-row" style="margin-top:2rem;">
+    <button class="action-btn" id="prevent-default-btn">preventDefault + stopProp</button>
+    <button class="action-btn" id="synthetic-fire-btn">Fire Synthetic Click</button>
+    <button class="action-btn" id="show-surprise-btn">Reveal Hidden Section</button>
+  </div>
+
+  <!-- Synthetic click target -->
+  <div id="synth-target">
+    🎯 Synthetic Click Target — click the button above to fire a programmatic click here
+  </div>
+
+  <!-- Drag and drop zone -->
+  <div class="dnd-zone" id="dnd-zone">
+    📁 Drag & drop files here to test DnD tracking
+  </div>
+
+  <!-- Input fields -->
+  <div style="display:flex;flex-direction:column;gap:1rem;align-items:center;margin-top:2rem;width:min(500px,90vw);">
+    <div class="input-group" style="width:100%">
+      <label>Your name</label>
+      <input type="text" placeholder="Ada Lovelace">
+    </div>
+    <div class="input-group" style="width:100%">
+      <label>Scale slider (0–100)</label>
+      <input type="range" min="0" max="100" value="50" id="range-slider">
+    </div>
+    <label class="checkbox-label">
+      <input type="checkbox" id="agree-checkbox"> I agree to the Terms of Service and Privacy Policy
+    </label>
+  </div>
+</section>
+
+<!-- ── Hidden Surprise Section ───────────────── -->
+<div id="surprise-section">
+  <p class="section-label">Secret Section</p>
+  <h2>You found it 🎉</h2>
+  <p class="subtext">This section was hidden until you clicked the button. PoorJar should be tracking events in here too.</p>
+  <div class="action-row">
+    <button class="action-btn">Click me (in hidden section)</button>
+    <button class="action-btn">Another button</button>
+  </div>
+</div>
+
+<!-- ── Async Loaded Content Area ─────────────── -->
+<section id="async-section" style="min-height:60vh;background:var(--bg);gap:1rem;">
+  <p class="section-label">Async Content</p>
+  <h2>Loading in real time</h2>
+  <p class="subtext">These cards load after 1s, 2s, and 3s delays — like lazy-loaded sections in a real app.</p>
+  <div id="async-slot-1" class="async-placeholder"></div>
+  <div id="async-slot-2" class="async-placeholder" style="animation-delay:.3s"></div>
+  <div id="async-slot-3" class="async-placeholder" style="animation-delay:.6s"></div>
+</section>
+
+<!-- ── SECTION 3: Pricing ─────────────────────── -->
+<section id="pricing">
+  <p class="section-label">Simple Pricing</p>
+  <h2>No surprises</h2>
+  <p class="subtext">All plans include every feature. You pay for what you use, nothing more.</p>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <h3>Starter</h3>
+      <div class="price">$0<span>/mo</span></div>
+      <ul class="pricing-features">
+        <li>5 GB storage</li>
+        <li>1M API calls/mo</li>
+        <li>Community support</li>
+        <li>3 team members</li>
+      </ul>
+      <button class="btn-secondary" style="width:100%">Get Started</button>
+    </div>
+    <div class="pricing-card featured">
+      <h3>Pro</h3>
+      <div class="price">$79<span>/mo</span></div>
+      <ul class="pricing-features">
+        <li>500 GB storage</li>
+        <li>50M API calls/mo</li>
+        <li>Priority support</li>
+        <li>Unlimited members</li>
+        <li>Custom domains</li>
+        <li>SLA guarantee</li>
+      </ul>
+      <button class="btn-primary" style="width:100%" id="pricing-cta">Start Free Trial</button>
+    </div>
+    <div class="pricing-card">
+      <h3>Enterprise</h3>
+      <div class="price">Custom</div>
+      <ul class="pricing-features">
+        <li>Unlimited everything</li>
+        <li>Dedicated infrastructure</li>
+        <li>24/7 white-glove support</li>
+        <li>Custom SLAs (up to 99.999%)</li>
+        <li>On-premise deployment</li>
+      </ul>
+      <button class="btn-secondary" style="width:100%">Contact Sales</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── SECTION 4: Testimonials ───────────────── -->
+<section id="testimonials">
+  <p class="section-label">What Customers Say</p>
+  <h2>Trusted by the best</h2>
+  <div class="testimonial-grid">
+    <div class="testimonial-card">
+      <p>"Acme Cloud cut our infrastructure bill by 60% while improving p99 latency from 80ms to 4ms. Nothing else comes close."</p>
+      <div class="testimonial-author">
+        <div class="avatar" style="background:var(--accent)">SR</div>
+        <div>Sarah Rodriguez <span>CTO, DataStream Inc.</span></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p>"We migrated 47 microservices in a weekend with zero downtime. The auto-healing literally fixed a production bug before we noticed."</p>
+      <div class="testimonial-author">
+        <div class="avatar" style="background:#ff6b6b">JK</div>
+        <div>Jake Kim <span>VP Engineering, Nexus</span></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <p>"The observability tooling alone is worth the price. We finally have one source of truth for the entire platform."</p>
+      <div class="testimonial-author">
+        <div class="avatar" style="background:var(--accent2)">AM</div>
+        <div>Amara Mensah <span>SRE Lead, Orbital</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Lazy section (appears after scroll) ───── -->
+<section id="lazy-section">
+  <p class="section-label">Powered by Research</p>
+  <h2>Built on open standards</h2>
+  <p class="subtext">Acme Cloud is built on and contributes to the open-source projects powering modern cloud infrastructure.</p>
+  <div class="action-row" style="margin-top:2rem">
+    <button class="action-btn">Kubernetes</button>
+    <button class="action-btn">eBPF</button>
+    <button class="action-btn">WebAssembly</button>
+    <button class="action-btn">QUIC</button>
+    <button class="action-btn">Rust</button>
+  </div>
+</section>
+
+<!-- ── Infinite Scroll Section ───────────────── -->
+<section id="infinite-section" style="background:var(--surface);gap:1rem;padding-bottom:4rem;">
+  <p class="section-label">Activity Feed</p>
+  <h2>Live platform events</h2>
+  <p class="subtext">Scroll to load more — this tests PoorJar's infinite scroll tracking.</p>
+  <div id="infinite-container" style="width:min(700px,90vw);">
+    <!-- Blocks injected by JS -->
+  </div>
+  <div id="infinite-loader" class="visible">Loading more events...</div>
+  <div id="scroll-sentinel"></div>
+</section>
+
+<!-- ── SECTION 5: Contact ────────────────────── -->
+<section id="contact">
+  <p class="section-label">Get In Touch</p>
+  <h2>Let's talk</h2>
+  <p class="subtext">Ready to move off your legacy cloud? Our team will build you a custom migration plan in 48 hours.</p>
+  <form class="contact-form" onsubmit="return false;">
+    <div class="input-group">
+      <label>Full Name</label>
+      <input type="text" placeholder="Ada Lovelace">
+    </div>
+    <div class="input-group">
+      <label>Work Email</label>
+      <input type="email" placeholder="ada@company.com">
+    </div>
+    <textarea placeholder="Tell us about your infrastructure..."></textarea>
+    <div class="action-row" style="margin:0;">
+      <label class="checkbox-label" style="flex:1">
+        <input type="checkbox"> Send me the migration guide
+      </label>
+    </div>
+    <button class="btn-primary" type="submit" id="contact-submit">Send Message</button>
+  </form>
+</section>
+
+<!-- ── PoorJar Test Console ───────────────────── -->
+<div id="pj-console">
+  <div id="pj-console-header">
+    <span>🍯 PoorJar Console</span>
+    <span class="badge" id="pj-badge">0 events</span>
+    <span style="color:var(--muted);font-size:0.7rem;">▼</span>
+  </div>
+  <div id="pj-console-body">
+    <div id="pj-tabs">
+      <div class="pj-tab active" data-panel="pj-log-panel">Log</div>
+      <div class="pj-tab" data-panel="pj-stats-panel">Stats</div>
+      <div class="pj-tab" data-panel="pj-checklist-panel">Checklist</div>
+    </div>
+
+    <div id="pj-log-panel" class="pj-panel active">
+      <div id="pj-log"></div>
+    </div>
+
+    <div id="pj-stats-panel" class="pj-panel">
+      <div id="pj-stats">
+        <div class="pj-stat">
+          <span class="pj-stat-value" id="stat-queued">0</span>
+          <span class="pj-stat-label">Queued</span>
+        </div>
+        <div class="pj-stat">
+          <span class="pj-stat-value" id="stat-flushed">0</span>
+          <span class="pj-stat-label">Flushes</span>
+        </div>
+        <div class="pj-stat">
+          <span class="pj-stat-value" id="stat-sent">0</span>
+          <span class="pj-stat-label">Total Sent</span>
+        </div>
+        <div class="pj-stat">
+          <span class="pj-stat-value" id="stat-types">—</span>
+          <span class="pj-stat-label">Last Type</span>
+        </div>
+      </div>
+      <button id="pj-flush-btn">⚡ Force Flush Now</button>
+    </div>
+
+    <div id="pj-checklist-panel" class="pj-panel">
+      <div id="pj-checklist">
+        <div class="check-item" id="chk-click"><span class="ci-status"></span>Click tracking fires on regular click</div>
+        <div class="check-item" id="chk-prevent"><span class="ci-status"></span>Click tracked despite preventDefault</div>
+        <div class="check-item" id="chk-capture"><span class="ci-status"></span>Click tracked despite capture stopPropagation</div>
+        <div class="check-item" id="chk-rage"><span class="ci-status"></span>Rage click (3+ clicks in 600ms/60px) fires</div>
+        <div class="check-item" id="chk-scroll25"><span class="ci-status"></span>Scroll 25% milestone</div>
+        <div class="check-item" id="chk-scroll50"><span class="ci-status"></span>Scroll 50% milestone</div>
+        <div class="check-item" id="chk-scroll75"><span class="ci-status"></span>Scroll 75% milestone</div>
+        <div class="check-item" id="chk-scroll100"><span class="ci-status"></span>Scroll 100% milestone</div>
+        <div class="check-item" id="chk-dwell"><span class="ci-status"></span>Dwell (500ms pause in 30px) fires</div>
+        <div class="check-item" id="chk-flush"><span class="ci-status"></span>Flush sends events to Supabase</div>
+        <div class="check-item" id="chk-synth"><span class="ci-status"></span>Synthetic click NOT double-counted</div>
+        <div class="check-item" id="chk-tabs"><span class="ci-status"></span>Click tracked after tab DOM swap</div>
+        <div class="check-item" id="chk-async"><span class="ci-status"></span>Click tracked in async-loaded content</div>
+        <div class="check-item" id="chk-infinite"><span class="ci-status"></span>Scroll tracked through infinite scroll</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────
+// Hell Test Page JS
+// ─────────────────────────────────────────────────────────────
+
+// ── Console toggle ────────────────────────────
+var consoleBody = document.getElementById('pj-console-body');
+var consoleHeader = document.getElementById('pj-console-header');
+var consoleCollapsed = false;
+consoleHeader.addEventListener('click', function() {
+  consoleCollapsed = !consoleCollapsed;
+  consoleBody.style.display = consoleCollapsed ? 'none' : 'block';
+  consoleHeader.querySelector('span:last-child').textContent = consoleCollapsed ? '▲' : '▼';
+});
+
+// ── Console tab switching ──────────────────────
+document.querySelectorAll('.pj-tab').forEach(function(tab) {
+  tab.addEventListener('click', function() {
+    document.querySelectorAll('.pj-tab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.pj-panel').forEach(function(p) { p.classList.remove('active'); });
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.panel).classList.add('active');
+  });
+});
+
+// ── Event intercept + log ─────────────────────
+var pjLog = document.getElementById('pj-log');
+var pjBadge = document.getElementById('pj-badge');
+var totalEventCount = 0;
+var typeCounts = {};
+
+function logPJEvent(detail) {
+  totalEventCount++;
+  typeCounts[detail.type] = (typeCounts[detail.type] || 0) + 1;
+  pjBadge.textContent = totalEventCount + ' events';
+
+  var entry = document.createElement('div');
+  entry.className = 'pj-entry ' + detail.type;
+  var t = new Date(detail.type === 'dwell' ? detail.timestamp : Date.now());
+  var ts = t.toTimeString().slice(0,8);
+  var extra = '';
+  if (detail.type === 'scroll') extra = ' depth=' + Math.round(detail.depth * 100) + '%';
+  if (detail.x !== undefined) extra = ' x=' + detail.x + ' y=' + detail.y;
+  entry.textContent = '[' + ts + '] ' + detail.type + extra;
+  pjLog.appendChild(entry);
+  pjLog.scrollTop = pjLog.scrollHeight;
+
+  // Update stats panel
+  document.getElementById('stat-queued').textContent =
+    window.PoorJar ? window.PoorJar.getQueue().length : '?';
+  document.getElementById('stat-types').textContent = detail.type;
+
+  // Update checklist
+  updateChecklist(detail);
+}
+
+document.addEventListener('poorjar:event', function(e) {
+  logPJEvent(e.detail);
+});
+
+document.addEventListener('poorjar:flush', function(e) {
+  var d = e.detail;
+  document.getElementById('stat-flushed').textContent = d.flushCount;
+  document.getElementById('stat-sent').textContent = d.totalSent;
+
+  var entry = document.createElement('div');
+  entry.className = 'pj-entry flush';
+  entry.textContent = '── flush #' + d.flushCount + ' (' + d.count + ' events sent, ' + d.totalSent + ' total) ──';
+  pjLog.appendChild(entry);
+  pjLog.scrollTop = pjLog.scrollHeight;
+
+  markCheck('chk-flush');
+});
+
+// ── Checklist ─────────────────────────────────
+function markCheck(id) {
+  var el = document.getElementById(id);
+  if (el && !el.classList.contains('done')) el.classList.add('done');
+}
+
+function updateChecklist(detail) {
+  if (detail.type === 'click') markCheck('chk-click');
+  if (detail.type === 'rage_click') markCheck('chk-rage');
+  if (detail.type === 'dwell') markCheck('chk-dwell');
+  if (detail.type === 'scroll') {
+    if (detail.depth >= 0.25) markCheck('chk-scroll25');
+    if (detail.depth >= 0.50) markCheck('chk-scroll50');
+    if (detail.depth >= 0.75) markCheck('chk-scroll75');
+    if (detail.depth >= 1.00) markCheck('chk-scroll100');
+    markCheck('chk-infinite');
+  }
+}
+
+// ── Force flush button ────────────────────────
+document.getElementById('pj-flush-btn').addEventListener('click', function() {
+  if (window.PoorJar) {
+    window.PoorJar.flush();
+  }
+});
+
+// ── Modal ─────────────────────────────────────
+function openModal() { document.getElementById('modal-overlay').classList.add('open'); }
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+document.getElementById('header-demo-btn').addEventListener('click', openModal);
+document.getElementById('open-modal-btn').addEventListener('click', openModal);
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+
+// ── preventDefault + stopPropagation button ───
+document.getElementById('prevent-default-btn').addEventListener('click', function(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  this.textContent = '✓ preventDefault + stopProp (PoorJar should still track)';
+  markCheck('chk-prevent');
+  // Note: PoorJar uses capture:true, so it sees clicks before stopProp
+});
+
+// ── Capture-phase stopPropagation zone ────────
+// This tests PoorJar's own capture:true listener beating page capture listeners
+document.getElementById('capture-btn').addEventListener('click', function(e) {
+  e.stopPropagation();
+  this.style.borderColor = 'var(--accent2)';
+  this.style.color = 'var(--accent2)';
+  this.textContent = '✓ Capture stopProp — was poorjar still fired?';
+  markCheck('chk-capture');
+}, true); // capture:true — fires before bubble listeners
+
+// ── Synthetic click ───────────────────────────
+var synthTarget = document.getElementById('synth-target');
+var synthClickCount = 0;
+document.getElementById('synthetic-fire-btn').addEventListener('click', function() {
+  synthClickCount++;
+  // Dispatch a synthetic click — PoorJar should ideally detect it (isTrusted=false)
+  var syntheticEvt = new MouseEvent('click', {
+    bubbles: true,
+    cancelable: true,
+    clientX: synthTarget.getBoundingClientRect().left + 50,
+    clientY: synthTarget.getBoundingClientRect().top + 20,
+    view: window
+  });
+  synthTarget.dispatchEvent(syntheticEvt);
+  this.textContent = 'Synthetic fired ×' + synthClickCount;
+  markCheck('chk-synth');
+});
+
+// ── Tab panel ────────────────────────────────
+document.querySelectorAll('.tab-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.tab-content').forEach(function(c) { c.classList.remove('active'); });
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    markCheck('chk-tabs');
+  });
+});
+
+// ── Drag and drop zone ────────────────────────
+var dndZone = document.getElementById('dnd-zone');
+dndZone.addEventListener('dragover', function(e) {
+  e.preventDefault();
+  dndZone.classList.add('drag-over');
+});
+dndZone.addEventListener('dragleave', function() { dndZone.classList.remove('drag-over'); });
+dndZone.addEventListener('drop', function(e) {
+  e.preventDefault();
+  dndZone.classList.remove('drag-over');
+  var files = e.dataTransfer && e.dataTransfer.files;
+  dndZone.textContent = files && files.length
+    ? '✓ Dropped ' + files.length + ' file(s)'
+    : '✓ Drop received (no files)';
+});
+
+// ── Show hidden surprise section ──────────────
+document.getElementById('show-surprise-btn').addEventListener('click', function() {
+  var ss = document.getElementById('surprise-section');
+  ss.classList.add('visible');
+  ss.scrollIntoView({ behavior: 'smooth' });
+  this.textContent = '✓ Hidden section revealed';
+});
+
+// ── Async content loading ──────────────────────
+var asyncData = [
+  { delay: 1000, id: 'async-slot-1', title: 'Infrastructure Metrics', body: 'Loaded after 1 second. Simulates lazy analytics panels. PoorJar events should work in here.' },
+  { delay: 2000, id: 'async-slot-2', title: 'Security Scan Results', body: 'Loaded after 2 seconds. Zero vulnerabilities detected across 847 dependencies. All CVEs patched.' },
+  { delay: 3000, id: 'async-slot-3', title: 'AI Recommendations', body: 'Loaded after 3 seconds. Cost optimization: downscale worker-4 during 02:00-06:00 UTC for 23% savings.' }
+];
+asyncData.forEach(function(item) {
+  setTimeout(function() {
+    var slot = document.getElementById(item.id);
+    if (!slot) return;
+    var div = document.createElement('div');
+    div.className = 'async-loaded';
+    div.innerHTML = '<h4>' + item.title + '</h4><p>' + item.body + '</p><button class="action-btn" style="margin-top:0.75rem;font-size:0.8rem">Click me (async content)</button>';
+    slot.parentNode.replaceChild(div, slot);
+    markCheck('chk-async');
+  }, item.delay);
+});
+
+// ── URL hash / pushState on scroll ────────────
+var sections = ['hero', 'features', 'pricing', 'testimonials', 'contact'];
+var lastSection = '';
+function updateHash() {
+  var mid = window.scrollY + window.innerHeight / 2;
+  for (var i = 0; i < sections.length; i++) {
+    var el = document.getElementById(sections[i]);
+    if (!el) continue;
+    var rect = el.getBoundingClientRect();
+    if (rect.top <= window.innerHeight / 2 && rect.bottom > 0) {
+      var hash = '#' + sections[i];
+      if (hash !== lastSection) {
+        lastSection = hash;
+        history.pushState(null, '', hash);
+      }
+      break;
+    }
+  }
+}
+window.addEventListener('scroll', updateHash, { passive: true });
+
+// ── Lazy section reveal ───────────────────────
+var lazySection = document.getElementById('lazy-section');
+var lazyRevealed = false;
+function checkLazy() {
+  if (lazyRevealed) return;
+  var rect = lazySection.getBoundingClientRect();
+  if (rect.top < window.innerHeight * 0.85) {
+    lazyRevealed = true;
+    lazySection.classList.add('revealed');
+  }
+}
+window.addEventListener('scroll', checkLazy, { passive: true });
+
+// ── Infinite scroll ───────────────────────────
+var infiniteContainer = document.getElementById('infinite-container');
+var infiniteLoader = document.getElementById('infinite-loader');
+var infiniteCount = 0;
+var infiniteLoading = false;
+
+function addInfiniteBlocks(count) {
+  var types = ['Deploy', 'Scale', 'Alert', 'Backup', 'Cert renewal', 'Health check', 'Failover', 'Rate limit', 'Cache flush', 'Auth'];
+  var regions = ['us-east-1', 'eu-west-2', 'ap-south-1', 'us-west-2', 'sa-east-1'];
+  var statuses = ['✅ SUCCESS', '⚠️ WARNING', '✅ SUCCESS', '✅ SUCCESS', '🔄 RUNNING'];
+  for (var i = 0; i < count; i++) {
+    infiniteCount++;
+    var block = document.createElement('div');
+    block.className = 'infinite-block';
+    var type = types[Math.floor(Math.random() * types.length)];
+    var region = regions[Math.floor(Math.random() * regions.length)];
+    var status = statuses[Math.floor(Math.random() * statuses.length)];
+    var ago = Math.floor(Math.random() * 60);
+    block.innerHTML =
+      '<div style="display:flex;justify-content:space-between;align-items:center">' +
+        '<span style="font-weight:600;font-size:0.9rem">' + type + ' #' + infiniteCount + '</span>' +
+        '<span style="font-size:0.75rem;color:var(--muted)">' + ago + 's ago</span>' +
+      '</div>' +
+      '<div style="display:flex;gap:1rem;margin-top:0.5rem;font-size:0.8rem;color:var(--muted)">' +
+        '<span>Region: ' + region + '</span>' +
+        '<span>' + status + '</span>' +
+      '</div>' +
+      '<button class="action-btn" style="margin-top:0.75rem;font-size:0.75rem;padding:0.4rem 0.8rem">Details</button>';
+    infiniteContainer.appendChild(block);
+  }
+}
+
+// Seed with initial blocks
+addInfiniteBlocks(5);
+
+// IntersectionObserver for sentinel
+var sentinel = document.getElementById('scroll-sentinel');
+var observer = new IntersectionObserver(function(entries) {
+  if (entries[0].isIntersecting && !infiniteLoading) {
+    infiniteLoading = true;
+    infiniteLoader.classList.add('visible');
+    setTimeout(function() {
+      addInfiniteBlocks(3);
+      infiniteLoading = false;
+      infiniteLoader.classList.remove('visible');
+    }, 800);
+  }
+}, { threshold: 0 });
+observer.observe(sentinel);
+
+// ── Rage click demo button in Hero ────────────
+// (Users can just click anything rapidly, but let's add a hint)
+document.getElementById('hero-cta').addEventListener('click', function() {
+  this.textContent = 'Keep clicking fast for rage_click →';
+});
+
+// ── Pricing CTA ───────────────────────────────
+document.getElementById('pricing-cta').addEventListener('click', function(e) {
+  e.preventDefault();
+  openModal();
+});
+
+// ── Contact form ──────────────────────────────
+document.getElementById('contact-submit').addEventListener('click', function(e) {
+  e.preventDefault();
+  this.textContent = '✓ Message sent!';
+  this.style.background = 'var(--accent2)';
+  setTimeout(function() {
+    document.getElementById('contact-submit').textContent = 'Send Message';
+    document.getElementById('contact-submit').style.background = '';
+  }, 2000);
+});
+
+// ── Modal submit ──────────────────────────────
+document.getElementById('modal-submit').addEventListener('click', function(e) {
+  e.preventDefault();
+  this.textContent = '✓ Scheduled!';
+  setTimeout(closeModal, 800);
+});
+
+// ── Stats updater ──────────────────────────────
+setInterval(function() {
+  if (window.PoorJar) {
+    var s = window.PoorJar.stats();
+    document.getElementById('stat-queued').textContent  = s.queued;
+    document.getElementById('stat-flushed').textContent = s.flushCount;
+    document.getElementById('stat-sent').textContent    = s.totalSent;
+  }
+}, 1000);
+
+console.log('[HellTest] Page loaded — PoorJar hell test active.');
+console.log('[HellTest] Open the console panel (bottom-left) to monitor events.');
+</script>
+</body>
+</html>

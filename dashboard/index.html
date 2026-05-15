@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PoorJar Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0A0A0B;
+      --bg2: #111113;
+      --card: rgba(255,255,255,0.04);
+      --card-border: rgba(255,255,255,0.08);
+      --green: #4AE3A0;
+      --green-dim: rgba(74,227,160,0.15);
+      --text: #fff;
+      --text-muted: rgba(255,255,255,0.45);
+      --text-dim: rgba(255,255,255,0.65);
+      --rage: #FF6B6B;
+      --rage-dim: rgba(255,107,107,0.15);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* ---- CONNECT SCREEN ---- */
+    #connect-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .connect-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .connect-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: var(--green);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #0A0A0B;
+    }
+
+    .logo-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .connect-headline {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .connect-sub {
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      font-size: 14px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-dim);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .field input {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .field input:focus {
+      border-color: var(--green);
+    }
+
+    .field input::placeholder {
+      color: rgba(255,255,255,0.25);
+    }
+
+    .btn-connect {
+      width: 100%;
+      background: var(--green);
+      color: #0A0A0B;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: opacity 0.15s;
+    }
+
+    .btn-connect:hover { opacity: 0.9; }
+    .btn-connect:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    #connect-error {
+      color: var(--rage);
+      font-size: 13px;
+      margin-top: 12px;
+      display: none;
+    }
+
+    /* ---- DASHBOARD ---- */
+    #dashboard {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 28px;
+      border-bottom: 1px solid var(--card-border);
+      background: rgba(10,10,11,0.9);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+
+    .topbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .topbar-logo-mark {
+      width: 26px;
+      height: 26px;
+      background: var(--green);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: #0A0A0B;
+    }
+
+    .topbar-logo-text {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .topbar-spacer { flex: 1; }
+
+    .connected-indicator {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    .connected-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--green);
+    }
+
+    .connected-url {
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .btn-share {
+      padding: 6px 14px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: 6px;
+      font-size: 12px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-share:hover { background: rgba(74,227,160,0.1); }
+    .btn-share.copied { border-color: #4ade80; color: #4ade80; }
+
+    .btn-disconnect {
+      background: none;
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 13px;
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .btn-disconnect:hover {
+      color: var(--text);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    /* Filter bar */
+    .filterbar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 28px;
+      border-bottom: 1px solid var(--card-border);
+      flex-wrap: wrap;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .filter-select {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 7px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 13px;
+      padding: 7px 12px;
+      cursor: pointer;
+      outline: none;
+      appearance: none;
+      padding-right: 28px;
+      background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='rgba(255,255,255,0.4)' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      transition: border-color 0.15s;
+    }
+
+    .filter-select:focus { border-color: var(--green); }
+
+    .date-toggle {
+      display: flex;
+      gap: 4px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 7px;
+      padding: 3px;
+    }
+
+    .date-btn {
+      background: none;
+      border: none;
+      border-radius: 5px;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 13px;
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .date-btn.active {
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+    }
+
+    .btn-refresh {
+      margin-left: auto;
+      background: none;
+      border: 1px solid var(--card-border);
+      border-radius: 7px;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 13px;
+      padding: 7px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .btn-refresh:hover {
+      color: var(--text);
+      border-color: rgba(255,255,255,0.2);
+    }
+
+    .btn-refresh.loading {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    /* Content */
+    .content {
+      padding: 24px 28px;
+      flex: 1;
+    }
+
+    /* Stat cards */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .stat-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 500px) {
+      .stat-row { grid-template-columns: 1fr; }
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .stat-value.rage-stat { color: var(--rage); }
+
+    /* Main columns */
+    .main-cols {
+      display: grid;
+      grid-template-columns: 60fr 40fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    @media (max-width: 1100px) {
+      .main-cols { grid-template-columns: 1fr; }
+    }
+
+    /* Heatmap panel */
+    .panel {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--card-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .panel-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .toggle-group {
+      display: flex;
+      gap: 4px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      padding: 3px;
+    }
+
+    .toggle-btn {
+      background: none;
+      border: none;
+      border-radius: 4px;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 12px;
+      padding: 4px 11px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .toggle-btn.active {
+      background: rgba(255,255,255,0.12);
+      color: var(--text);
+    }
+
+    .panel-body {
+      padding: 20px;
+    }
+
+    .heatmap-wrap {
+      position: relative;
+      background: #1a1a1c;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    #heatmap-iframe {
+      display: block;
+      width: 1440px;
+      height: 900px;
+      border: none;
+      pointer-events: none;
+      transform-origin: top left;
+    }
+
+    #heatmap-canvas {
+      display: block;
+      position: absolute;
+      top: 0; left: 0;
+      pointer-events: none;
+    }
+
+    .heatmap-scale-wrap {
+      width: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border-radius: 8px;
+      position: relative;
+      background: #1a1a1c;
+    }
+
+    .heatmap-inner {
+      position: relative;
+    }
+
+    .heatmap-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+
+    .heatmap-count {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Scroll depth */
+    .scroll-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .scroll-row {
+      display: grid;
+      grid-template-columns: 52px 1fr 40px;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .scroll-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      text-align: right;
+    }
+
+    .scroll-track {
+      background: rgba(255,255,255,0.06);
+      border-radius: 4px;
+      height: 10px;
+      overflow: hidden;
+    }
+
+    .scroll-fill {
+      background: var(--green);
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.4s ease;
+      opacity: 0.8;
+    }
+
+    .scroll-pct {
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    /* Top pages */
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead th {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody td {
+      padding: 9px 10px;
+      font-size: 13px;
+      color: var(--text-dim);
+      vertical-align: middle;
+    }
+
+    tbody td:first-child {
+      font-family: 'SFMono-Regular', 'Consolas', monospace;
+      font-size: 12px;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Rage clicks */
+    .rage-header {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .rage-header.has-rages { color: var(--rage); }
+    .rage-header.no-rages { color: var(--text-muted); }
+
+    .rage-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .rage-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      background: var(--rage-dim);
+      border: 1px solid rgba(255,107,107,0.2);
+      border-radius: 7px;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .rage-coord {
+      font-family: 'SFMono-Regular', 'Consolas', monospace;
+      color: var(--rage);
+      font-size: 11px;
+      white-space: nowrap;
+    }
+
+    .rage-url {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Empty state */
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      gap: 8px;
+      font-size: 13px;
+    }
+
+    .empty-icon {
+      font-size: 28px;
+      opacity: 0.5;
+    }
+
+    /* Loading */
+    .loading-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10,10,11,0.7);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .loading-overlay.visible {
+      display: flex;
+    }
+
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(74,227,160,0.2);
+      border-top-color: var(--green);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Sections in right column */
+    .right-col {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Gradient legend */
+    .gradient-legend {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .gradient-bar {
+      flex: 1;
+      height: 6px;
+      border-radius: 3px;
+      background: linear-gradient(to right, #0000ff, #00ff00, #ffff00, #ff0000);
+      opacity: 0.7;
+    }
+
+    .gradient-label {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Connect Screen -->
+<div id="connect-screen">
+  <div class="connect-card">
+    <div class="connect-logo">
+      <div class="logo-mark">P</div>
+      <span class="logo-text">PoorJar Dashboard</span>
+    </div>
+    <h1 class="connect-headline">Connect your project</h1>
+    <p class="connect-sub">Enter your Supabase credentials to load your analytics data. Everything runs in your browser.</p>
+    <div class="field">
+      <label for="input-url">Supabase Project URL</label>
+      <input type="url" id="input-url" placeholder="https://abc.supabase.co" autocomplete="off" spellcheck="false" />
+    </div>
+    <div class="field">
+      <label for="input-key">Anon Key</label>
+      <input type="password" id="input-key" placeholder="eyJh..." autocomplete="off" spellcheck="false" />
+    </div>
+    <button class="btn-connect" id="btn-connect">Connect</button>
+    <div id="connect-error"></div>
+    <div style="margin-top:24px; padding-top:20px; border-top:1px solid #1e1e20; text-align:center;">
+      <p style="font-size:0.72rem; color:#555; line-height:1.7; margin:0 0 10px;">
+        Your credentials go directly from your browser to Supabase. poorjar.com never sees them.
+      </p>
+      <div style="display:flex; gap:12px; justify-content:center;">
+        <a href="https://poorjar.com/dashboard/index.html" download="poorjar-dashboard.html" style="font-size:0.72rem; color:#444; text-decoration:none; border:1px solid #2a2a2a; border-radius:5px; padding:5px 10px;">↓ Self-host this dashboard</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div id="dashboard">
+  <div class="topbar">
+    <div class="topbar-logo">
+      <div class="topbar-logo-mark">P</div>
+      <span class="topbar-logo-text">PoorJar</span>
+    </div>
+    <div class="topbar-spacer"></div>
+    <div class="connected-indicator">
+      <div class="connected-dot"></div>
+      <span class="connected-url" id="connected-url-label"></span>
+    </div>
+    <button class="btn-share" id="btn-share" title="Copy shareable dashboard link">⬡ Copy link</button>
+    <a class="btn-share" href="https://poorjar.com/dashboard/index.html" download="poorjar-dashboard.html" title="Download dashboard to self-host">↓ Download</a>
+    <button class="btn-disconnect" id="btn-disconnect">Disconnect</button>
+  </div>
+
+  <div class="filterbar">
+    <span class="filter-label">Page</span>
+    <select class="filter-select" id="url-filter">
+      <option value="">All pages</option>
+    </select>
+    <span class="filter-label" style="margin-left:8px;">Range</span>
+    <div class="date-toggle">
+      <button class="date-btn active" data-days="7">Last 7 days</button>
+      <button class="date-btn" data-days="30">Last 30 days</button>
+      <button class="date-btn" data-days="0">All time</button>
+    </div>
+    <button class="btn-refresh" id="btn-refresh">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13 7A6 6 0 1 1 7 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M9 1h4v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Refresh
+    </button>
+  </div>
+
+  <div class="content">
+    <div class="stat-row">
+      <div class="stat-card">
+        <div class="stat-label">Total Sessions</div>
+        <div class="stat-value" id="stat-sessions">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Events</div>
+        <div class="stat-value" id="stat-events">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Unique Pages</div>
+        <div class="stat-value" id="stat-pages">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Rage Clicks</div>
+        <div class="stat-value rage-stat" id="stat-rage">--</div>
+      </div>
+    </div>
+
+    <div class="main-cols">
+      <!-- Left: heatmap -->
+      <div class="panel">
+        <div class="panel-header">
+          <span class="panel-title">Click Heatmap</span>
+          <div class="toggle-group">
+            <button class="toggle-btn active" data-hm="clicks">Clicks</button>
+            <button class="toggle-btn" data-hm="mousemove">Dwell spots</button>
+            <button class="toggle-btn" data-hm="both">Both</button>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="heatmap-wrap">
+            <div class="heatmap-scale-wrap" id="heatmap-scale-wrap">
+              <div class="heatmap-inner" id="heatmap-inner">
+                <iframe id="heatmap-iframe" src="about:blank"></iframe>
+                <canvas id="heatmap-canvas"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="heatmap-footer">
+            <span class="heatmap-count" id="heatmap-count">0 points</span>
+            <div class="gradient-legend">
+              <span class="gradient-label">Low</span>
+              <div class="gradient-bar"></div>
+              <span class="gradient-label">High</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column -->
+      <div class="right-col">
+        <!-- Scroll depth -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Scroll Depth</span>
+          </div>
+          <div class="panel-body">
+            <div class="scroll-bars" id="scroll-bars"></div>
+          </div>
+        </div>
+
+        <!-- Top pages -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Top Pages</span>
+          </div>
+          <div class="panel-body" style="padding: 0;">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>URL</th>
+                    <th>Sessions</th>
+                    <th>Clicks</th>
+                    <th>Avg Scroll</th>
+                  </tr>
+                </thead>
+                <tbody id="pages-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rage clicks -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Rage Clicks</span>
+          </div>
+          <div class="panel-body">
+            <div id="rage-list-wrap"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading overlay -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="spinner"></div>
+</div>
+
+<script>
+  // ---- State ----
+  let supabaseUrl = '';
+  let anonKey = '';
+  let allEvents = [];
+  let filteredEvents = [];
+  let activeDays = 7;
+  let activeUrlFilter = '';
+  let activeHeatmapMode = 'clicks';
+
+  // ---- Init ----
+  (function init() {
+    // 1. Check URL hash for encoded config: #base64({"u":"...","k":"...","s":"..."})
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      try {
+        const cfg = JSON.parse(atob(hash));
+        if (cfg.u && cfg.k) {
+          supabaseUrl = cfg.u.replace(/\/$/, '');
+          anonKey = cfg.k;
+          // Optionally pre-filter to a site_id
+          if (cfg.s) activeUrlFilter = cfg.s;
+          // Persist so refresh still works
+          localStorage.setItem('pj_supabase_url', supabaseUrl);
+          localStorage.setItem('pj_supabase_key', anonKey);
+          showDashboard();
+          loadData();
+          return;
+        }
+      } catch (e) { /* not a valid config hash, fall through */ }
+    }
+
+    // 2. Fall back to localStorage (previously connected)
+    supabaseUrl = localStorage.getItem('pj_supabase_url') || '';
+    anonKey = localStorage.getItem('pj_supabase_key') || '';
+    if (supabaseUrl && anonKey) {
+      showDashboard();
+      loadData();
+    }
+  })();
+
+  // ---- Helper: build a shareable dashboard URL ----
+  function buildShareUrl() {
+    const cfg = { u: supabaseUrl, k: anonKey };
+    return window.location.origin + '/dashboard/#' + btoa(JSON.stringify(cfg));
+  }
+
+  // ---- Connect screen ----
+  document.getElementById('btn-connect').addEventListener('click', async () => {
+    const urlInput = document.getElementById('input-url').value.trim().replace(/\/$/, '');
+    const keyInput = document.getElementById('input-key').value.trim();
+    const errEl = document.getElementById('connect-error');
+    const btn = document.getElementById('btn-connect');
+
+    errEl.style.display = 'none';
+    if (!urlInput || !keyInput) {
+      showError('Both fields are required.');
+      return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Connecting...';
+
+    try {
+      const testUrl = urlInput + '/rest/v1/poorjar_events?select=id&limit=1';
+      const res = await fetch(testUrl, {
+        headers: { apikey: keyInput, Authorization: 'Bearer ' + keyInput }
+      });
+      if (!res.ok) {
+        const body = await res.text();
+        throw new Error('Status ' + res.status + ': ' + body.slice(0, 120));
+      }
+      supabaseUrl = urlInput;
+      anonKey = keyInput;
+      localStorage.setItem('pj_supabase_url', supabaseUrl);
+      localStorage.setItem('pj_supabase_key', anonKey);
+      showDashboard();
+      loadData();
+    } catch (e) {
+      showError('Connection failed: ' + e.message);
+      btn.disabled = false;
+      btn.textContent = 'Connect';
+    }
+
+    function showError(msg) {
+      errEl.textContent = msg;
+      errEl.style.display = 'block';
+    }
+  });
+
+  document.getElementById('input-key').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('btn-connect').click();
+  });
+
+  // ---- Disconnect ----
+  document.getElementById('btn-share').addEventListener('click', () => {
+    const url = buildShareUrl();
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.getElementById('btn-share');
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = '⬡ Copy link';
+        btn.classList.remove('copied');
+      }, 2000);
+    }).catch(() => {
+      // Fallback for non-HTTPS or blocked clipboard
+      prompt('Copy your dashboard link:', buildShareUrl());
+    });
+  });
+
+  document.getElementById('btn-disconnect').addEventListener('click', () => {
+    localStorage.removeItem('pj_supabase_url');
+    localStorage.removeItem('pj_supabase_key');
+    supabaseUrl = '';
+    anonKey = '';
+    allEvents = [];
+    filteredEvents = [];
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('connect-screen').style.display = 'flex';
+    document.getElementById('input-url').value = '';
+    document.getElementById('input-key').value = '';
+    document.getElementById('connect-error').style.display = 'none';
+    document.getElementById('btn-connect').disabled = false;
+    document.getElementById('btn-connect').textContent = 'Connect';
+  });
+
+  // ---- Date toggle ----
+  document.querySelectorAll('.date-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeDays = parseInt(btn.dataset.days);
+      applyFilters();
+    });
+  });
+
+  // ---- URL filter ----
+  document.getElementById('url-filter').addEventListener('change', function() {
+    activeUrlFilter = this.value;
+    applyFilters();
+  });
+
+  // ---- Refresh ----
+  document.getElementById('btn-refresh').addEventListener('click', loadData);
+
+  // ---- Heatmap toggle ----
+  document.querySelectorAll('[data-hm]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-hm]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeHeatmapMode = btn.dataset.hm;
+      renderHeatmap();
+    });
+  });
+
+  // ---- Show dashboard ----
+  function showDashboard() {
+    document.getElementById('connect-screen').style.display = 'none';
+    const dash = document.getElementById('dashboard');
+    dash.style.display = 'flex';
+    const short = supabaseUrl.replace('https://', '').split('.')[0];
+    document.getElementById('connected-url-label').textContent = short + '.supabase.co';
+  }
+
+  // ---- Fetch events ----
+  async function fetchEvents(filters = {}) {
+    let url = supabaseUrl + '/rest/v1/poorjar_events?select=*&order=timestamp.desc&limit=10000';
+    if (filters.url) url += '&url=eq.' + encodeURIComponent(filters.url);
+    if (filters.since) url += '&timestamp=gte.' + filters.since;
+    const res = await fetch(url, {
+      headers: { apikey: anonKey, Authorization: 'Bearer ' + anonKey }
+    });
+    if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+    return res.json();
+  }
+
+  // ---- Load data ----
+  async function loadData() {
+    setLoading(true);
+    try {
+      allEvents = await fetchEvents();
+      populateUrlFilter();
+      applyFilters();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function setLoading(on) {
+    document.getElementById('loading-overlay').classList.toggle('visible', on);
+    document.getElementById('btn-refresh').classList.toggle('loading', on);
+  }
+
+  // ---- Populate URL dropdown ----
+  function populateUrlFilter() {
+    const sel = document.getElementById('url-filter');
+    const urls = [...new Set(allEvents.map(e => e.url).filter(Boolean))].sort();
+    sel.innerHTML = '<option value="">All pages</option>';
+    urls.forEach(u => {
+      const opt = document.createElement('option');
+      opt.value = u;
+      opt.textContent = truncateUrl(u, 60);
+      sel.appendChild(opt);
+    });
+  }
+
+  // ---- Apply filters ----
+  function applyFilters() {
+    let events = allEvents;
+
+    if (activeDays > 0) {
+      // timestamps are stored as milliseconds integers — compare directly
+      const since = Date.now() - activeDays * 86400 * 1000;
+      events = events.filter(e => e.timestamp >= since);
+    }
+
+    if (activeUrlFilter) {
+      events = events.filter(e => e.url === activeUrlFilter);
+    }
+
+    filteredEvents = events;
+    renderAll();
+  }
+
+  // ---- iframe page preview ----
+  let iframeUrl = '';
+
+  let currentScale = 1;
+
+  function updateIframe(url, fullHeight) {
+    const iframe = document.getElementById('heatmap-iframe');
+    const inner = document.getElementById('heatmap-inner');
+    const scaleWrap = document.getElementById('heatmap-scale-wrap');
+
+    const containerW = scaleWrap.offsetWidth || 800;
+    currentScale = containerW / 1440;
+    const scaledH = Math.round(fullHeight * currentScale);
+
+    // iframe is 1440px wide, scaled down visually
+    // transform: scale() doesn't affect layout, so we use a spacer div trick:
+    // set the inner wrapper to the scaled pixel dimensions so scrolling works correctly
+    iframe.style.width = '1440px';
+    iframe.style.height = fullHeight + 'px';
+    // transform-origin top left, scale down to fit container
+    iframe.style.transform = 'scale(' + currentScale + ')';
+    iframe.style.transformOrigin = 'top left';
+    iframe.style.position = 'absolute';
+    iframe.style.top = '0';
+    iframe.style.left = '0';
+
+    // The inner div acts as the layout spacer — sized to scaled dimensions
+    inner.style.width = containerW + 'px';
+    inner.style.height = scaledH + 'px';
+    inner.style.position = 'relative';
+
+    scaleWrap.style.maxHeight = Math.min(scaledH, 580) + 'px';
+
+    window.addEventListener('resize', () => updateIframe(iframeUrl, fullHeight));
+
+    if (!url || url === iframeUrl) return;
+    iframeUrl = url;
+    // Strip any hash so the page loads at the top
+    const cleanUrl = url.split('#')[0];
+    iframe.src = cleanUrl;
+    // After load, force scroll back to top (same-origin only, but try anyway)
+    iframe.onload = () => {
+      try { iframe.contentWindow.scrollTo(0, 0); } catch(e) {}
+    };
+  }
+
+  // ---- Render everything ----
+  function renderAll() {
+    renderStats();
+    // Compute full page height from max Y in data
+    const pageEvents = filteredEvents.filter(e => e.y);
+    const maxY = pageEvents.length ? Math.max(...pageEvents.map(e => e.y)) : 900;
+    const fullHeight = Math.max(maxY + 200, 900); // padding below last point
+
+    // Load the selected page or first page into the iframe
+    const previewUrl = activeUrlFilter ||
+      (filteredEvents.length ? filteredEvents.find(e => e.url)?.url : '');
+    if (previewUrl) updateIframe(previewUrl, fullHeight);
+    renderHeatmap();
+    renderScrollDepth();
+    renderTopPages();
+    renderRageClicks();
+  }
+
+  // ---- Stats ----
+  function renderStats() {
+    const sessions = new Set(filteredEvents.map(e => e.session_id)).size;
+    const events = filteredEvents.length;
+    const pages = new Set(filteredEvents.map(e => e.url)).size;
+    const rages = filteredEvents.filter(e => e.type === 'rage_click').length;
+
+    document.getElementById('stat-sessions').textContent = fmt(sessions);
+    document.getElementById('stat-events').textContent = fmt(events);
+    document.getElementById('stat-pages').textContent = fmt(pages);
+    document.getElementById('stat-rage').textContent = fmt(rages);
+  }
+
+  // ---- Heatmap ----
+  function renderHeatmap() {
+    const canvas = document.getElementById('heatmap-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Canvas matches the scaled iframe dimensions exactly
+    const s = currentScale || 1;
+    const pageEvts = filteredEvents.filter(e => e.y);
+    const maxY2 = pageEvts.length ? Math.max(...pageEvts.map(e => e.y)) : 900;
+    const fullH = Math.max(maxY2 + 200, 900);
+
+    const scaleWrap = document.getElementById('heatmap-scale-wrap');
+    const containerW = scaleWrap.offsetWidth || 800;
+    const cw = containerW;
+    const ch = Math.round(fullH * s);
+
+    canvas.width = cw;
+    canvas.height = ch;
+    canvas.style.width = cw + 'px';
+    canvas.style.height = ch + 'px';
+
+    ctx.clearRect(0, 0, cw, ch);
+
+    // Filter events by type
+    let points = [];
+    if (activeHeatmapMode === 'clicks') {
+      points = filteredEvents.filter(e => e.type === 'click' || e.type === 'rage_click');
+    } else if (activeHeatmapMode === 'mousemove') {
+      points = filteredEvents.filter(e => e.type === 'dwell');
+    } else {
+      points = filteredEvents.filter(e => e.type !== 'scroll');
+    }
+
+    document.getElementById('heatmap-count').textContent = fmt(points.length) + ' point' + (points.length !== 1 ? 's' : '');
+
+    if (points.length === 0) return;
+
+    // Build density grid
+    const CELL = 4;
+    const gw = Math.ceil(cw / CELL);
+    const gh = Math.ceil(ch / CELL);
+    const grid = new Float32Array(gw * gh);
+
+    points.forEach(e => {
+      if (e.x == null || e.y == null) return;
+      // x is a page coordinate from the user's viewport (width = e.vpw).
+      // Normalize to 0-1 across the viewport width, then map to 1440px iframe space, then scale.
+      // y is page-absolute (top of document) — just scale directly.
+      const normX = e.vpw ? e.x / e.vpw : e.x / 1440;
+      const px = normX * 1440 * s;
+      const py = e.y * s;
+      const gx = Math.floor(px / CELL);
+      const gy = Math.floor(py / CELL);
+      if (gx >= 0 && gx < gw && gy >= 0 && gy < gh) {
+        grid[gy * gw + gx] += 1;
+      }
+    });
+
+    // Find max for normalization
+    let maxVal = 0;
+    for (let i = 0; i < grid.length; i++) {
+      if (grid[i] > maxVal) maxVal = grid[i];
+    }
+    if (maxVal === 0) return;
+
+    // Proper Gaussian intensity field — same approach as the demo
+    const BLOB_R = Math.round(60 * s), BLOB_SIGMA = Math.round(24 * s);
+    const intensity = new Float32Array(cw * ch);
+
+    for (let gy = 0; gy < gh; gy++) {
+      for (let gx = 0; gx < gw; gx++) {
+        const val = grid[gy * gw + gx];
+        if (val === 0) continue;
+        const pcx = Math.round((gx + 0.5) * CELL);
+        const pcy = Math.round((gy + 0.5) * CELL);
+        const weight = val / maxVal;
+        const x0 = Math.max(0, pcx - BLOB_R), x1 = Math.min(cw - 1, pcx + BLOB_R);
+        const y0 = Math.max(0, pcy - BLOB_R), y1 = Math.min(ch - 1, pcy + BLOB_R);
+        for (let py = y0; py <= y1; py++) {
+          const dy = py - pcy;
+          for (let px = x0; px <= x1; px++) {
+            const dx = px - pcx;
+            intensity[py * cw + px] += weight * Math.exp(-(dx * dx + dy * dy) / (2 * BLOB_SIGMA * BLOB_SIGMA));
+          }
+        }
+      }
+    }
+
+    // Find max for normalization
+    let imax = 0;
+    for (let i = 0; i < intensity.length; i++) if (intensity[i] > imax) imax = intensity[i];
+    if (imax === 0) return;
+
+    // Colorize using heatColor
+    const finalData = ctx.createImageData(cw, ch);
+    const dst = finalData.data;
+    for (let i = 0; i < intensity.length; i++) {
+      const t = intensity[i] / imax;
+      if (t < 0.02) {
+        // Fully transparent — let iframe show through
+        dst[i*4+3] = 0;
+        continue;
+      }
+      const [r, g, b] = heatColor(t);
+      dst[i*4] = r; dst[i*4+1] = g; dst[i*4+2] = b;
+      dst[i*4+3] = Math.round(Math.min(t * 2.5, 1) * 190 + 40);
+    }
+    ctx.putImageData(finalData, 0, 0);
+  }
+
+  function heatColor(t) {
+    // 0 = blue, 0.4 = green, 0.65 = yellow, 1.0 = red
+    if (t < 0.4) {
+      const s = t / 0.4;
+      return [Math.round(0 + s * 0), Math.round(0 + s * 255), Math.round(255 - s * 255)];
+    } else if (t < 0.65) {
+      const s = (t - 0.4) / 0.25;
+      return [Math.round(0 + s * 255), Math.round(255), Math.round(0)];
+    } else {
+      const s = (t - 0.65) / 0.35;
+      return [255, Math.round(255 - s * 255), 0];
+    }
+  }
+
+  // ---- Scroll depth ----
+  function renderScrollDepth() {
+    const container = document.getElementById('scroll-bars');
+
+    // Get scroll events; use scroll_y / vph or depth field
+    const scrollEvents = filteredEvents.filter(e => e.type === 'scroll');
+
+    // Per session, find max depth
+    const sessionMax = {};
+    scrollEvents.forEach(e => {
+      const sid = e.session_id;
+      let depth = 0;
+      if (e.depth != null) {
+        depth = e.depth; // already 0-1 or 0-100
+        if (depth > 1) depth = depth / 100;
+      } else if (e.scroll_y != null && e.vph) {
+        depth = e.scroll_y / (e.vph * 3); // rough estimate
+      }
+      depth = Math.min(1, Math.max(0, depth));
+      if (sessionMax[sid] == null || depth > sessionMax[sid]) {
+        sessionMax[sid] = depth;
+      }
+    });
+
+    const sessions = Object.values(sessionMax);
+    const totalSessions = new Set(filteredEvents.map(e => e.session_id)).size || 1;
+
+    // Build buckets: 0-10%, 10-20%, ... 90-100%
+    const buckets = Array(10).fill(0);
+    sessions.forEach(d => {
+      for (let b = 0; b < 10; b++) {
+        if (d >= b * 0.1) buckets[b]++;
+      }
+    });
+
+    container.innerHTML = '';
+    for (let b = 0; b < 10; b++) {
+      const pct = sessions.length > 0 ? Math.round((buckets[b] / totalSessions) * 100) : 0;
+      const row = document.createElement('div');
+      row.className = 'scroll-row';
+
+      const label = document.createElement('span');
+      label.className = 'scroll-label';
+      label.textContent = (b * 10) + '%';
+
+      const track = document.createElement('div');
+      track.className = 'scroll-track';
+      const fill = document.createElement('div');
+      fill.className = 'scroll-fill';
+      fill.style.width = pct + '%';
+      track.appendChild(fill);
+
+      const pctLabel = document.createElement('span');
+      pctLabel.className = 'scroll-pct';
+      pctLabel.textContent = pct + '%';
+
+      row.appendChild(label);
+      row.appendChild(track);
+      row.appendChild(pctLabel);
+      container.appendChild(row);
+    }
+
+    if (sessions.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon">📜</div><span>No scroll data yet</span></div>';
+    }
+  }
+
+  // ---- Top pages ----
+  function renderTopPages() {
+    const tbody = document.getElementById('pages-tbody');
+
+    const pageData = {};
+    filteredEvents.forEach(e => {
+      const url = e.url || '(unknown)';
+      if (!pageData[url]) {
+        pageData[url] = { sessions: new Set(), clicks: 0, scrollDepths: [] };
+      }
+      pageData[url].sessions.add(e.session_id);
+      if (e.type === 'click' || e.type === 'rage_click') pageData[url].clicks++;
+      if (e.type === 'scroll') {
+        let d = 0;
+        if (e.depth != null) {
+          d = e.depth > 1 ? e.depth / 100 : e.depth;
+        } else if (e.scroll_y && e.vph) {
+          d = Math.min(1, e.scroll_y / (e.vph * 3));
+        }
+        pageData[url].scrollDepths.push(d);
+      }
+    });
+
+    const rows = Object.entries(pageData)
+      .map(([url, d]) => ({
+        url,
+        sessions: d.sessions.size,
+        clicks: d.clicks,
+        avgScroll: d.scrollDepths.length > 0
+          ? Math.round((d.scrollDepths.reduce((a, b) => a + b, 0) / d.scrollDepths.length) * 100)
+          : 0
+      }))
+      .sort((a, b) => b.sessions - a.sessions)
+      .slice(0, 10);
+
+    if (rows.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:24px;">No data yet</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = rows.map(r => `
+      <tr>
+        <td title="${escHtml(r.url)}">${escHtml(truncateUrl(r.url, 35))}</td>
+        <td>${r.sessions}</td>
+        <td>${r.clicks}</td>
+        <td>${r.avgScroll}%</td>
+      </tr>
+    `).join('');
+  }
+
+  // ---- Rage clicks ----
+  function renderRageClicks() {
+    const wrap = document.getElementById('rage-list-wrap');
+    const rages = filteredEvents.filter(e => e.type === 'rage_click');
+
+    if (rages.length === 0) {
+      wrap.innerHTML = '<div class="rage-header no-rages">No rage clicks detected</div>';
+      return;
+    }
+
+    const header = document.createElement('div');
+    header.className = 'rage-header has-rages';
+    header.textContent = fmt(rages.length) + ' rage click' + (rages.length !== 1 ? 's' : '') + ' detected';
+
+    const list = document.createElement('div');
+    list.className = 'rage-list';
+
+    rages.slice(0, 20).forEach(e => {
+      const item = document.createElement('div');
+      item.className = 'rage-item';
+      const coord = document.createElement('span');
+      coord.className = 'rage-coord';
+      coord.textContent = e.x != null ? '(' + Math.round(e.x) + ', ' + Math.round(e.y) + ')' : '(?, ?)';
+      const urlSpan = document.createElement('span');
+      urlSpan.className = 'rage-url';
+      urlSpan.title = e.url || '';
+      urlSpan.textContent = truncateUrl(e.url || '(unknown)', 50);
+      item.appendChild(coord);
+      item.appendChild(urlSpan);
+      list.appendChild(item);
+    });
+
+    wrap.innerHTML = '';
+    wrap.appendChild(header);
+    wrap.appendChild(list);
+  }
+
+  // ---- Utilities ----
+  function fmt(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(1) + 'M';
+    if (n >= 1000) return (n / 1000).toFixed(1) + 'K';
+    return n.toString();
+  }
+
+  function truncateUrl(url, max) {
+    if (!url) return '';
+    try {
+      const u = new URL(url);
+      // Show hostname + path so you can tell pages apart across sites
+      const display = u.hostname.replace('www.', '') + u.pathname + (u.search || '');
+      if (display.length <= max) return display;
+      return display.slice(0, max) + '...';
+    } catch (_) {
+      if (url.length <= max) return url;
+      return url.slice(0, max) + '...';
+    }
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+</script>
+</body>
+</html>

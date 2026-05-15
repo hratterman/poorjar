@@ -1,0 +1,53 @@
+:root {
+  /* Colors */
+  --bg: #0A0A0B;
+  --bg-2: #111113;
+  --bg-3: #1A1A1E;
+  --bg-4: #222228;
+  --border: #2A2A32;
+  --border-light: #3A3A45;
+  --text: #E8E8F0;
+  --text-muted: #888899;
+  --text-dim: #555566;
+  --accent: #4AE3A0;
+  --accent-dim: rgba(74, 227, 160, 0.15);
+  --accent-glow: rgba(74, 227, 160, 0.3);
+  --red: #FF5555;
+  --yellow: #FFD060;
+
+  /* Fonts */
+  --font-sans: 'Outfit', system-ui, sans-serif;
+  --font-mono: 'DM Mono', 'Fira Code', monospace;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow: 0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.6);
+  --shadow-accent: 0 0 20px rgba(74, 227, 160, 0.15);
+
+  /* Layout */
+  --max-width: 1100px;
+  --header-height: 64px;
+}
