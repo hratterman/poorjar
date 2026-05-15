@@ -1,0 +1,98 @@
+<svg width="1200" height="300" viewBox="0 0 1200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="300" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0A0A0B"/>
+      <stop offset="100%" stop-color="#0f1a14"/>
+    </linearGradient>
+    <linearGradient id="accentGlow" x1="0" y1="0" x2="0" y2="1" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4AE3A0" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#4AE3A0" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softglow">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="300" fill="url(#bg)"/>
+
+  <!-- Subtle grid lines -->
+  <g opacity="0.04" stroke="#4AE3A0" stroke-width="1">
+    <line x1="0" y1="60" x2="1200" y2="60"/>
+    <line x1="0" y1="120" x2="1200" y2="120"/>
+    <line x1="0" y1="180" x2="1200" y2="180"/>
+    <line x1="0" y1="240" x2="1200" y2="240"/>
+    <line x1="200" y1="0" x2="200" y2="300"/>
+    <line x1="400" y1="0" x2="400" y2="300"/>
+    <line x1="600" y1="0" x2="600" y2="300"/>
+    <line x1="800" y1="0" x2="800" y2="300"/>
+    <line x1="1000" y1="0" x2="1000" y2="300"/>
+  </g>
+
+  <!-- Heatmap dots (decorative, right side) -->
+  <!-- Cluster 1 - hot -->
+  <circle cx="920" cy="110" r="60" fill="#ff3300" opacity="0.06"/>
+  <circle cx="920" cy="110" r="35" fill="#ff6600" opacity="0.08"/>
+  <circle cx="920" cy="110" r="15" fill="#ffaa00" opacity="0.12"/>
+  <!-- Cluster 2 - warm -->
+  <circle cx="1050" cy="180" r="45" fill="#ff6600" opacity="0.05"/>
+  <circle cx="1050" cy="180" r="22" fill="#ffaa00" opacity="0.08"/>
+  <!-- Cluster 3 - cool -->
+  <circle cx="850" cy="210" r="40" fill="#0066ff" opacity="0.05"/>
+  <circle cx="850" cy="210" r="18" fill="#4AE3A0" opacity="0.06"/>
+  <!-- Cluster 4 -->
+  <circle cx="1100" cy="90" r="30" fill="#ff6600" opacity="0.04"/>
+  <circle cx="1100" cy="90" r="14" fill="#ffaa00" opacity="0.07"/>
+  <!-- Cluster 5 - tiny -->
+  <circle cx="980" cy="230" r="20" fill="#4AE3A0" opacity="0.06"/>
+  <circle cx="980" cy="230" r="8" fill="#4AE3A0" opacity="0.1"/>
+
+  <!-- Rage click indicator -->
+  <circle cx="920" cy="110" r="6" fill="#ff3300" opacity="0.9" filter="url(#glow)"/>
+  <text x="930" y="100" font-family="monospace" font-size="9" fill="#ff3300" opacity="0.7">rage click</text>
+
+  <!-- Dwell indicator -->
+  <circle cx="1050" cy="180" r="5" fill="#4AE3A0" opacity="0.8" filter="url(#glow)"/>
+  <text x="1060" y="176" font-family="monospace" font-size="9" fill="#4AE3A0" opacity="0.6">dwell</text>
+
+  <!-- Jar logo -->
+  <g transform="translate(68, 118)" filter="url(#softglow)">
+    <path d="M0 14 L3 46 L33 46 L36 14Z" stroke="#4AE3A0" stroke-width="2.5" stroke-linejoin="round" fill="none"/>
+    <path d="M-2 14 L38 14" stroke="#4AE3A0" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="M8 14 L7 7 L29 7 L28 14" stroke="#4AE3A0" stroke-width="2" stroke-linejoin="round" fill="none"/>
+    <circle cx="13" cy="26" r="2.5" fill="#4AE3A0" opacity="0.8"/>
+    <circle cx="20" cy="34" r="2.5" fill="#4AE3A0" opacity="0.8"/>
+    <circle cx="26" cy="24" r="1.8" fill="#4AE3A0" opacity="0.5"/>
+    <circle cx="16" cy="38" r="1.5" fill="#4AE3A0" opacity="0.4"/>
+  </g>
+
+  <!-- PoorJar wordmark -->
+  <text x="130" y="158" font-family="'Outfit', 'Inter', system-ui, sans-serif" font-size="52" font-weight="700" fill="#ffffff" letter-spacing="-1">PoorJar</text>
+
+  <!-- Tagline -->
+  <text x="131" y="188" font-family="'Outfit', 'Inter', system-ui, sans-serif" font-size="16" font-weight="400" fill="#4AE3A0" letter-spacing="0.5">Analytics for people who won't pay $99/month</text>
+
+  <!-- Pills -->
+  <g transform="translate(131, 208)">
+    <!-- pill 1 -->
+    <rect x="0" y="0" width="68" height="22" rx="11" fill="#4AE3A0" fill-opacity="0.1" stroke="#4AE3A0" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="34" y="15" font-family="monospace" font-size="10" fill="#4AE3A0" text-anchor="middle">&lt; 5KB</text>
+    <!-- pill 2 -->
+    <rect x="76" y="0" width="98" height="22" rx="11" fill="#4AE3A0" fill-opacity="0.1" stroke="#4AE3A0" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="125" y="15" font-family="monospace" font-size="10" fill="#4AE3A0" text-anchor="middle">no dependencies</text>
+    <!-- pill 3 -->
+    <rect x="182" y="0" width="108" height="22" rx="11" fill="#4AE3A0" fill-opacity="0.1" stroke="#4AE3A0" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="236" y="15" font-family="monospace" font-size="10" fill="#4AE3A0" text-anchor="middle">your database</text>
+    <!-- pill 4 -->
+    <rect x="298" y="0" width="72" height="22" rx="11" fill="#4AE3A0" fill-opacity="0.1" stroke="#4AE3A0" stroke-opacity="0.3" stroke-width="1"/>
+    <text x="334" y="15" font-family="monospace" font-size="10" fill="#4AE3A0" text-anchor="middle">MIT license</text>
+  </g>
+
+  <!-- Bottom border accent -->
+  <line x1="0" y1="299" x2="1200" y2="299" stroke="#4AE3A0" stroke-width="1" opacity="0.2"/>
+</svg>
