@@ -16,10 +16,10 @@ var _pjScript = document.currentScript;
   var mode     = script && script.dataset.mode; // 'supabase' | 'sheets' | '' (default: custom webhook)
   var apiKey   = script && script.dataset.key;  // Supabase anon key for auth headers
 
-  if (!endpoint) { console.warn('[PoorJar] no endpoint found — check script tag data-endpoint attribute'); return; }
+  if (!endpoint) return;
 
   var sessionId = (Math.random().toString(16).slice(2,10) + Math.random().toString(16).slice(2,10)).slice(0,12);
-  console.log('[PoorJar] initialized — site:', siteId, '| endpoint:', endpoint, '| mode:', mode);
+
   var vpW = window.innerWidth, vpH = window.innerHeight;
 
   var events = [];
@@ -45,7 +45,6 @@ var _pjScript = document.currentScript;
 
   function push(e) {
     events.push(e);
-    console.log('[PoorJar] event queued:', e.type, '| queue length:', events.length);
     // Emit custom event so external tooling (test consoles, debuggers) can observe
     try {
       document.dispatchEvent(new CustomEvent('poorjar:event', { detail: e }));
@@ -121,7 +120,6 @@ var _pjScript = document.currentScript;
   var totalSent = 0;
 
   function flush(beacon) {
-    console.log('[PoorJar] flush called — events in queue:', events.length);
     if (!events.length) return;
     var batch = events.splice(0);
     var payload;
@@ -168,10 +166,8 @@ var _pjScript = document.currentScript;
       var xhr = new XMLHttpRequest();
       xhr.open('POST', endpoint, true);
       for (var h in headers) xhr.setRequestHeader(h, headers[h]);
-      xhr.onerror = function() { console.warn('[PoorJar] XHR error on flush'); };
-      xhr.onload  = function() {
-        if (xhr.status >= 400) console.warn('[PoorJar] flush HTTP', xhr.status, xhr.responseText && xhr.responseText.slice(0, 200));
-      };
+      xhr.onerror = function() {};
+      xhr.onload  = function() {};
       xhr.send(payload);
     }
   }
@@ -181,7 +177,7 @@ var _pjScript = document.currentScript;
   document.addEventListener('scroll',    handleScroll,    { passive: true, capture: true });
   document.addEventListener('mousemove', handleMouseMove, { passive: true, capture: true });
 
-  setInterval(function() { flush(false); }, 5000);
+  setInterval(function() { flush(false); }, 30000);
   window.addEventListener('pagehide',      function() { flush(true); });
   window.addEventListener('beforeunload',  function() { flush(true); });
 
