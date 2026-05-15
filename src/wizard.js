@@ -173,15 +173,18 @@ CREATE POLICY "allow insert" ON poorjar_events FOR INSERT WITH CHECK (true);</di
         <div class="config-instructions">
           <h4>Set up your Airtable base</h4>
           <ol>
-            <li>Create a new base in Airtable (or use an existing one).</li>
-            <li>Add a table called <strong>PoorJar Events</strong> with these fields: Session ID (Text), Type (Text), X (Number), Y (Number), Scroll Y (Number), Timestamp (Number), URL (URL).</li>
-            <li>Get your API key from <a href="https://airtable.com/create/tokens" target="_blank" rel="noopener" style="color:var(--accent);">airtable.com/create/tokens</a>. Create a personal access token with <code>data.records:write</code> scope on your base.</li>
-            <li>Find your Base ID in the URL when viewing your base: <code>https://airtable.com/<strong>appXXXXXXXXXXXXX</strong>/...</code></li>
+            <li>Create a new base in Airtable. Add a table called <strong>PoorJar Events</strong> with these fields:
+              <br><code>site_id</code>, <code>session_id</code>, <code>type</code>, <code>x</code>, <code>y</code>, <code>vx</code>, <code>vy</code>, <code>vpw</code>, <code>vph</code>, <code>depth</code>, <code>scroll_y</code>, <code>timestamp</code>, <code>url</code>
+              <br><small style="color:#666;">(x/y/vx/vy/vpw/vph/depth/scroll_y/timestamp = Number, the rest = Text)</small>
+            </li>
+            <li>Get a personal access token from <a href="https://airtable.com/create/tokens" target="_blank" rel="noopener" style="color:var(--accent);">airtable.com/create/tokens</a> with <code>data.records:write</code> scope on your base.</li>
+            <li>Find your Base ID in the URL: <code>https://airtable.com/<strong>appXXXXXXXXXXXXX</strong>/...</code></li>
           </ol>
+          <p style="font-size:0.78rem; color:#666; margin-top:8px;">PoorJar routes Airtable events through <code>poorjar.com/airtable-proxy</code> to handle browser CORS restrictions. Your API key is passed as a URL parameter and never stored anywhere.</p>
         </div>
         <div class="config-form">
           <div class="form-field">
-            <label class="form-label">Airtable API Key (Personal Access Token)</label>
+            <label class="form-label">Airtable Personal Access Token</label>
             <input class="form-input" id="inputAirtableKey" type="text" placeholder="patXXXXXXXXXXXXXX.xxxxxxxx..." value="${userInputs.airtable.apiKey}">
           </div>
           <div class="form-field">
@@ -202,21 +205,30 @@ CREATE POLICY "allow insert" ON poorjar_events FOR INSERT WITH CHECK (true);</di
   try {
     var data = JSON.parse(e.postData.contents);
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    // Add headers if sheet is empty
+    if (sheet.getLastRow() === 0) {
+      sheet.appendRow(['site_id','session_id','type','x','y','vx','vy','vpw','vph','depth','scroll_y','timestamp','url']);
+    }
     var events = data.events || [];
     events.forEach(function(ev) {
       sheet.appendRow([
+        data.site_id    || '',
         data.session_id || '',
-        ev.type || '',
-        ev.x || 0,
-        ev.y || 0,
-        ev.scroll_y || ev.depth || 0,
-        ev.timestamp || Date.now(),
-        ev.url || '',
-        data.site_id || ''
+        ev.type         || '',
+        ev.x            || 0,
+        ev.y            || 0,
+        ev.vx           || 0,
+        ev.vy           || 0,
+        ev.vpw          || data.vpw || 0,
+        ev.vph          || data.vph || 0,
+        ev.depth        || 0,
+        ev.scroll_y     || 0,
+        ev.timestamp    || Date.now(),
+        ev.url          || ''
       ]);
     });
     return ContentService
-      .createTextOutput(JSON.stringify({status:'ok'}))
+      .createTextOutput(JSON.stringify({ok:true,created:events.length}))
       .setMimeType(ContentService.MimeType.JSON);
   } catch(err) {
     return ContentService
@@ -307,10 +319,7 @@ CREATE POLICY "allow insert" ON poorjar_events FOR INSERT WITH CHECK (true);</di
       const apiKey = userInputs.airtable.apiKey;
       const baseId = userInputs.airtable.baseId;
       if (!apiKey || !baseId) return 'YOUR_AIRTABLE_ENDPOINT';
-      // Airtable doesn't allow direct browser POSTs (CORS restriction).
-      // User needs a small proxy — the wizard shows instructions for a Cloudflare Worker proxy.
-      if (!apiKey || !baseId) return 'YOUR_AIRTABLE_PROXY_URL';
-      return `https://poorjar-airtable.YOUR-SUBDOMAIN.workers.dev?base=${baseId}&table=PoorJar%20Events&key=${apiKey}`;
+      return `https://poorjar.com/airtable-proxy?base=${baseId}&table=PoorJar%20Events&key=${apiKey}`;
     } else if (selectedBackend === 'sheets') {
       return userInputs.sheets.webAppUrl || 'YOUR_APPS_SCRIPT_URL';
     } else if (selectedBackend === 'custom') {

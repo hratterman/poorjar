@@ -1,0 +1,10 @@
+name = "poorjar-airtable-proxy"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+account_id = "b00bb6fde996491d3c6d8c3abaf0fc48"
+
+[vars]
+
+[[routes]]
+pattern = "poorjar.com/airtable-proxy"
+zone_name = "poorjar.com"

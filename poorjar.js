@@ -1,5 +1,5 @@
 /*!
- * poorjar.js v1.2.0
+ * poorjar.js v1.3.0
  * Open source analytics. Bring your own backend.
  * https://poorjar.com
  * MIT License
@@ -43,7 +43,13 @@ var _pjScript = document.currentScript;
   function pageX(cx)      { return Math.round(cx + window.scrollX); }
   function pageY(cy)      { return Math.round(cy + window.scrollY); }
 
+  // Rate limit: max 500 events per session to prevent runaway tracking
+  var MAX_EVENTS_PER_SESSION = 500;
+  var totalPushed = 0;
+
   function push(e) {
+    if (totalPushed >= MAX_EVENTS_PER_SESSION) return;
+    totalPushed++;
     events.push(e);
     // Emit custom event so external tooling (test consoles, debuggers) can observe
     try {
