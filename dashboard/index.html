@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PoorJar Dashboard</title>
+  <link rel="icon" type="image/svg+xml" href="/poorjar/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -55,7 +56,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      margin-bottom: 32px;
+      margin-bottom: 20px;
     }
 
     .logo-mark {
@@ -78,15 +79,15 @@
     }
 
     .connect-headline {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 600;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
     .connect-sub {
       color: var(--text-muted);
-      margin-bottom: 28px;
-      font-size: 14px;
+      margin-bottom: 16px;
+      font-size: 13px;
     }
 
     .field {
@@ -125,7 +126,9 @@
     }
 
     .btn-connect {
+      display: block;
       width: 100%;
+      box-sizing: border-box;
       background: var(--green);
       color: #0A0A0B;
       border: none;
@@ -137,6 +140,7 @@
       cursor: pointer;
       margin-top: 8px;
       transition: opacity 0.15s;
+      text-align: center;
     }
 
     .btn-connect:hover { opacity: 0.9; }
@@ -225,7 +229,7 @@
     .connect-tabs {
       display: flex;
       gap: 4px;
-      margin-bottom: 24px;
+      margin-bottom: 16px;
       border-bottom: 1px solid #1e1e20;
       padding-bottom: 0;
     }
@@ -259,8 +263,8 @@
     /* Self-host tab */
     .selfhost-step {
       display: flex;
-      gap: 14px;
-      margin-bottom: 22px;
+      gap: 12px;
+      margin-bottom: 14px;
     }
     .selfhost-step-num {
       width: 24px;
@@ -303,8 +307,9 @@
       font-family: monospace;
       font-size: 0.7rem;
       color: #4AE3A0;
-      white-space: pre;
-      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: hidden;
       margin-top: 6px;
       line-height: 1.6;
     }
@@ -386,7 +391,9 @@
       flex-shrink: 0;
     }
     .settings-save {
+      display: block;
       width: 100%;
+      box-sizing: border-box;
       padding: 9px;
       background: var(--accent);
       color: #000;
@@ -964,7 +971,7 @@
         <div class="selfhost-step-body">
           <strong>Download the file</strong>
           <p>One HTML file. No dependencies.</p>
-          <a href="https://poorjar.com/dashboard/index.html" download="poorjar-dashboard.html" class="btn-connect" style="display:inline-block; text-decoration:none; text-align:center; margin-top:8px;">↓ Download poorjar-dashboard.html</a>
+          <a href="https://poorjar.com/dashboard/index.html" download="poorjar-dashboard.html" class="btn-connect" style="text-decoration:none;">↓ Download poorjar-dashboard.html</a>
         </div>
       </div>
 
@@ -975,8 +982,8 @@
           <p>Options from easiest to most control:</p>
           <ul class="selfhost-list">
             <li><strong>Netlify Drop</strong> — drag the file to <a href="https://app.netlify.com/drop" target="_blank" rel="noopener">app.netlify.com/drop</a>. Live in 30 seconds, free.</li>
-            <li><strong>GitHub Pages</strong> — add to a repo, enable Pages. Good if you want version control.</li>
-            <li><strong>Any static host</strong> — S3, Cloudflare Pages, Vercel, your own nginx. It's just a file.</li>
+            <li><strong><a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a></strong> — add to a repo, enable Pages. Good if you want version control.</li>
+            <li><strong>Any static host</strong> — <a href="https://aws.amazon.com/s3/" target="_blank" rel="noopener">S3</a>, <a href="https://pages.cloudflare.com" target="_blank" rel="noopener">Cloudflare Pages</a>, <a href="https://vercel.com" target="_blank" rel="noopener">Vercel</a>, your own nginx. It's just a file.</li>
             <li><strong>Open locally</strong> — double-click it. Works for personal use, but the pre-connected bookmark URL won't transfer to other devices.</li>
           </ul>
         </div>
@@ -987,12 +994,11 @@
         <div class="selfhost-step-body">
           <strong>Customize it (optional)</strong>
           <p>Open the file in a text editor. At the top of the <code>&lt;script&gt;</code> section, you'll find a <code>DASHBOARD_CONFIG</code> block:</p>
-          <div class="selfhost-code">// DASHBOARD_CONFIG — edit to customize your self-hosted dashboard
-const DASHBOARD_CONFIG = {
-  title: 'PoorJar',          // shown in browser tab + topbar
-  accentColor: '#4AE3A0',    // hex color for highlights
-  defaultDays: 7,            // default date range (7, 30, or 0 for all)
-  eventsPerPage: 25,         // rows in the events table
+          <div class="selfhost-code">const DASHBOARD_CONFIG = {
+  title: 'PoorJar',       // browser tab + topbar
+  accentColor: '#4AE3A0', // highlight color
+  defaultDays: 7,         // 7, 30, or 0 (all time)
+  eventsPerPage: 25,      // rows in events table
 };</div>
           <p style="margin-top:8px;">Change the values, save, re-upload. Done.</p>
         </div>
@@ -1171,6 +1177,9 @@ const DASHBOARD_CONFIG = {
   let activeDays = 7;
   let activeUrlFilter = '';
   let activeHeatmapMode = 'clicks';
+  let currentScale = 1;
+  let previewEnabled = true;
+  let iframeUrl = '';
 
   // ---- Init ----
   (function init() {
@@ -1483,11 +1492,6 @@ const DASHBOARD_CONFIG = {
   }
 
   // ---- iframe page preview ----
-  let iframeUrl = '';
-
-  let currentScale = 1;
-  let previewEnabled = true;
-
   function setIframeSize(fullHeight) {
     const iframe = document.getElementById('heatmap-iframe');
     const bg = document.getElementById('heatmap-bg');
@@ -1986,7 +1990,7 @@ const DASHBOARD_CONFIG = {
   <div class="settings-group">
     <div class="settings-group-label">Self-host</div>
     <p class="settings-note">This dashboard is a single HTML file. Download it and host it anywhere — Netlify, GitHub Pages, your own server, or just open it locally.</p>
-    <a href="https://poorjar.com/dashboard/index.html" download="poorjar-dashboard.html" class="settings-save" style="display:block; text-decoration:none; text-align:center; margin-top:12px;">↓ Download dashboard.html</a>
+    <a href="https://poorjar.com/dashboard/index.html" download="poorjar-dashboard.html" class="settings-save" style="text-decoration:none; box-sizing:border-box;">↓ Download dashboard.html</a>
     <p class="settings-note" style="margin-top:10px;">To pre-configure credentials so the login screen never appears, add this to the top of the script in the downloaded file:</p>
     <div class="selfhost-code" id="settings-autoconnect-snippet" style="margin-top:6px; font-size:0.65rem;"></div>
   </div>
