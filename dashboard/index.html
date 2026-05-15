@@ -221,6 +221,187 @@
       white-space: nowrap;
     }
 
+    /* Connect screen tabs */
+    .connect-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #1e1e20;
+      padding-bottom: 0;
+    }
+    .connect-tab {
+      background: none;
+      border: none;
+      color: #555;
+      font-size: 0.8rem;
+      font-family: inherit;
+      padding: 8px 14px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.15s;
+    }
+    .connect-tab:hover { color: #888; }
+    .connect-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .connect-footer-links {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.72rem;
+      color: #444;
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+    .connect-footer-links a { color: #555; text-decoration: none; }
+    .connect-footer-links a:hover { color: #888; }
+
+    /* Self-host tab */
+    .selfhost-step {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .selfhost-step-num {
+      width: 24px;
+      height: 24px;
+      min-width: 24px;
+      border-radius: 50%;
+      background: #1a1a1c;
+      border: 1px solid #2a2a2a;
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+    .selfhost-step-body {
+      flex: 1;
+      font-size: 0.8rem;
+      color: #888;
+      line-height: 1.6;
+    }
+    .selfhost-step-body strong { color: #ccc; display: block; margin-bottom: 4px; }
+    .selfhost-step-body p { margin: 0 0 6px; }
+    .selfhost-step-body a { color: var(--accent); text-decoration: none; }
+    .selfhost-list {
+      margin: 6px 0 0 0;
+      padding-left: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .selfhost-list li { font-size: 0.78rem; }
+    .selfhost-list strong { color: #bbb; display: inline; }
+    .selfhost-code {
+      background: #0e0e10;
+      border: 1px solid #222;
+      border-radius: 6px;
+      padding: 10px 12px;
+      font-family: monospace;
+      font-size: 0.7rem;
+      color: #4AE3A0;
+      white-space: pre;
+      overflow-x: auto;
+      margin-top: 6px;
+      line-height: 1.6;
+    }
+    .selfhost-code { color: #888; }
+    .selfhost-code { background: #0a0a0b; }
+    code { background: #1a1a1c; padding: 1px 5px; border-radius: 3px; font-size: 0.75rem; color: #4AE3A0; }
+
+    /* Settings panel */
+    .settings-panel {
+      display: none;
+      position: fixed;
+      top: 0; right: 0;
+      width: 320px;
+      height: 100vh;
+      background: #111;
+      border-left: 1px solid #1e1e20;
+      z-index: 200;
+      overflow-y: auto;
+      padding: 24px 20px;
+      box-sizing: border-box;
+    }
+    .settings-panel.open { display: block; }
+    .settings-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+      margin: 0 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .settings-close {
+      background: none;
+      border: none;
+      color: #555;
+      cursor: pointer;
+      font-size: 1.1rem;
+      padding: 0;
+      line-height: 1;
+    }
+    .settings-close:hover { color: #888; }
+    .settings-group { margin-bottom: 24px; }
+    .settings-group-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #444;
+      margin-bottom: 12px;
+    }
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .settings-label { font-size: 0.78rem; color: #888; }
+    .settings-input {
+      background: #1a1a1c;
+      border: 1px solid #2a2a2a;
+      border-radius: 5px;
+      color: #fff;
+      font-size: 0.75rem;
+      font-family: inherit;
+      padding: 5px 8px;
+      width: 140px;
+    }
+    .settings-input:focus { outline: none; border-color: #3a3a3a; }
+    .settings-color-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .settings-color-swatch {
+      width: 28px; height: 28px;
+      border-radius: 5px;
+      border: 1px solid #2a2a2a;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .settings-save {
+      width: 100%;
+      padding: 9px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .settings-save:hover { opacity: 0.9; }
+    .settings-divider { border: none; border-top: 1px solid #1e1e20; margin: 16px 0; }
+    .settings-note { font-size: 0.7rem; color: #444; line-height: 1.6; }
+
     .btn-share {
       padding: 6px 14px;
       background: transparent;
@@ -489,6 +670,42 @@
       position: relative;
     }
 
+    .heatmap-bg {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #0e0e10;
+      background-image:
+        linear-gradient(rgba(74,227,160,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74,227,160,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .heatmap-blocked-msg {
+      position: absolute;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a1a1c;
+      border: 1px solid #2a2a2a;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 0.75rem;
+      color: #555;
+      white-space: nowrap;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    #btn-preview-toggle {
+      font-size: 11px;
+      padding: 4px 10px;
+      opacity: 0.7;
+    }
+    #btn-preview-toggle.preview-off {
+      opacity: 0.4;
+    }
+
     .heatmap-footer {
       display: flex;
       align-items: center;
@@ -709,26 +926,94 @@
       <div class="logo-mark">P</div>
       <span class="logo-text">PoorJar Dashboard</span>
     </div>
-    <h1 class="connect-headline">Connect your project</h1>
-    <p class="connect-sub">Enter your Supabase credentials to load your analytics data. Everything runs in your browser.</p>
-    <div class="field">
-      <label for="input-url">Supabase Project URL</label>
-      <input type="url" id="input-url" placeholder="https://abc.supabase.co" autocomplete="off" spellcheck="false" />
+
+    <!-- Tabs -->
+    <div class="connect-tabs">
+      <button class="connect-tab active" data-tab="connect">Connect</button>
+      <button class="connect-tab" data-tab="selfhost">Self-host</button>
     </div>
-    <div class="field">
-      <label for="input-key">Anon Key</label>
-      <input type="password" id="input-key" placeholder="eyJh..." autocomplete="off" spellcheck="false" />
-    </div>
-    <button class="btn-connect" id="btn-connect">Connect</button>
-    <div id="connect-error"></div>
-    <div style="margin-top:24px; padding-top:20px; border-top:1px solid #1e1e20; text-align:center;">
-      <p style="font-size:0.72rem; color:#555; line-height:1.7; margin:0 0 10px;">
-        Your credentials go directly from your browser to Supabase. poorjar.com never sees them.
-      </p>
-      <div style="display:flex; gap:12px; justify-content:center;">
-        <a href="https://poorjar.com/dashboard/index.html" download="poorjar-dashboard.html" style="font-size:0.72rem; color:#444; text-decoration:none; border:1px solid #2a2a2a; border-radius:5px; padding:5px 10px;">↓ Self-host this dashboard</a>
+
+    <!-- Connect tab -->
+    <div class="connect-tab-panel" id="tab-connect">
+      <h1 class="connect-headline">Connect your project</h1>
+      <p class="connect-sub">Enter your Supabase credentials. Everything runs in your browser — poorjar.com never sees your data.</p>
+      <div class="field">
+        <label for="input-url">Supabase Project URL</label>
+        <input type="url" id="input-url" placeholder="https://abc.supabase.co" autocomplete="off" spellcheck="false" />
+      </div>
+      <div class="field">
+        <label for="input-key">Anon Key</label>
+        <input type="password" id="input-key" placeholder="eyJh..." autocomplete="off" spellcheck="false" />
+      </div>
+      <button class="btn-connect" id="btn-connect">Connect</button>
+      <div id="connect-error"></div>
+      <div class="connect-footer-links">
+        <a href="https://github.com/hratterman/poorjar" target="_blank" rel="noopener">View source on GitHub</a>
+        <span>·</span>
+        <a href="https://poorjar.com">poorjar.com</a>
       </div>
     </div>
+
+    <!-- Self-host tab -->
+    <div class="connect-tab-panel" id="tab-selfhost" style="display:none;">
+      <h1 class="connect-headline">Self-host this dashboard</h1>
+      <p class="connect-sub">This dashboard is a single HTML file. No server, no backend, no account. Host it anywhere.</p>
+
+      <div class="selfhost-step">
+        <div class="selfhost-step-num">1</div>
+        <div class="selfhost-step-body">
+          <strong>Download the file</strong>
+          <p>One HTML file. No dependencies.</p>
+          <a href="https://poorjar.com/dashboard/index.html" download="poorjar-dashboard.html" class="btn-connect" style="display:inline-block; text-decoration:none; text-align:center; margin-top:8px;">↓ Download poorjar-dashboard.html</a>
+        </div>
+      </div>
+
+      <div class="selfhost-step">
+        <div class="selfhost-step-num">2</div>
+        <div class="selfhost-step-body">
+          <strong>Host it anywhere</strong>
+          <p>Options from easiest to most control:</p>
+          <ul class="selfhost-list">
+            <li><strong>Netlify Drop</strong> — drag the file to <a href="https://app.netlify.com/drop" target="_blank" rel="noopener">app.netlify.com/drop</a>. Live in 30 seconds, free.</li>
+            <li><strong>GitHub Pages</strong> — add to a repo, enable Pages. Good if you want version control.</li>
+            <li><strong>Any static host</strong> — S3, Cloudflare Pages, Vercel, your own nginx. It's just a file.</li>
+            <li><strong>Open locally</strong> — double-click it. Works for personal use, but the pre-connected bookmark URL won't transfer to other devices.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="selfhost-step">
+        <div class="selfhost-step-num">3</div>
+        <div class="selfhost-step-body">
+          <strong>Customize it (optional)</strong>
+          <p>Open the file in a text editor. At the top of the <code>&lt;script&gt;</code> section, you'll find a <code>DASHBOARD_CONFIG</code> block:</p>
+          <div class="selfhost-code">// DASHBOARD_CONFIG — edit to customize your self-hosted dashboard
+const DASHBOARD_CONFIG = {
+  title: 'PoorJar',          // shown in browser tab + topbar
+  accentColor: '#4AE3A0',    // hex color for highlights
+  defaultDays: 7,            // default date range (7, 30, or 0 for all)
+  eventsPerPage: 25,         // rows in the events table
+};</div>
+          <p style="margin-top:8px;">Change the values, save, re-upload. Done.</p>
+        </div>
+      </div>
+
+      <div class="selfhost-step">
+        <div class="selfhost-step-num">4</div>
+        <div class="selfhost-step-body">
+          <strong>Pre-connect it (skip the login screen)</strong>
+          <p>Once connected, hit "Copy link" in the topbar. Bookmark it. That URL has your credentials encoded in the hash — paste it in the file to make it connect automatically on load:</p>
+          <div class="selfhost-code">// At the bottom of DASHBOARD_CONFIG, add:
+  autoConnect: {
+    url: 'https://YOUR_PROJECT.supabase.co',
+    key: 'your-anon-key',
+  }</div>
+        </div>
+      </div>
+
+      <button class="btn-connect" style="margin-top:8px;" onclick="document.querySelector('[data-tab=connect]').click()">← Back to connect</button>
+    </div>
+
   </div>
 </div>
 
@@ -745,7 +1030,7 @@
       <span class="connected-url" id="connected-url-label"></span>
     </div>
     <button class="btn-share" id="btn-share" title="Copy shareable dashboard link">⬡ Copy link</button>
-    <a class="btn-share" href="https://poorjar.com/dashboard/index.html" download="poorjar-dashboard.html" title="Download dashboard to self-host">↓ Download</a>
+    <button class="btn-share" id="btn-settings" title="Settings">⚙ Settings</button>
     <button class="btn-disconnect" id="btn-disconnect">Disconnect</button>
   </div>
 
@@ -794,10 +1079,13 @@
       <div class="panel">
         <div class="panel-header">
           <span class="panel-title">Click Heatmap</span>
-          <div class="toggle-group">
-            <button class="toggle-btn active" data-hm="clicks">Clicks</button>
-            <button class="toggle-btn" data-hm="mousemove">Dwell spots</button>
-            <button class="toggle-btn" data-hm="both">Both</button>
+          <div style="display:flex; gap:8px; align-items:center;">
+            <button class="toggle-btn" id="btn-preview-toggle" title="Toggle page preview">Preview: ON</button>
+            <div class="toggle-group">
+              <button class="toggle-btn active" data-hm="clicks">Clicks</button>
+              <button class="toggle-btn" data-hm="mousemove">Dwell spots</button>
+              <button class="toggle-btn" data-hm="both">Both</button>
+            </div>
           </div>
         </div>
         <div class="panel-body">
@@ -805,6 +1093,7 @@
             <div class="heatmap-scale-wrap" id="heatmap-scale-wrap">
               <div class="heatmap-inner" id="heatmap-inner">
                 <iframe id="heatmap-iframe" src="about:blank"></iframe>
+                <div id="heatmap-bg" class="heatmap-bg" style="display:none;"></div>
                 <canvas id="heatmap-canvas"></canvas>
               </div>
             </div>
@@ -968,6 +1257,99 @@
   });
 
   // ---- Disconnect ----
+  // ---- Connect screen tabs ----
+  document.querySelectorAll('.connect-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.connect-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.connect-tab-panel').forEach(p => p.style.display = 'none');
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).style.display = 'block';
+    });
+  });
+
+  // ---- Settings panel ----
+  function loadSettings() {
+    const s = JSON.parse(localStorage.getItem('pj_settings') || '{}');
+    if (s.title) {
+      document.title = s.title + ' — PoorJar';
+      document.querySelectorAll('.topbar-logo-text').forEach(el => el.textContent = s.title);
+      document.getElementById('setting-title').value = s.title;
+    }
+    if (s.color) applyAccentColor(s.color);
+    if (s.days !== undefined) {
+      activeDays = s.days;
+      document.getElementById('setting-days').value = s.days;
+    }
+    return s;
+  }
+
+  function applyAccentColor(hex) {
+    document.documentElement.style.setProperty('--accent', hex);
+    document.documentElement.style.setProperty('--accent-glow', hex + '33');
+    document.documentElement.style.setProperty('--accent-dim', hex + '11');
+    const colorInput = document.getElementById('setting-color');
+    const hexInput = document.getElementById('setting-color-hex');
+    if (colorInput) colorInput.value = hex;
+    if (hexInput) hexInput.value = hex;
+    // Update autoconnect snippet
+    updateAutoConnectSnippet();
+  }
+
+  function updateAutoConnectSnippet() {
+    const el = document.getElementById('settings-autoconnect-snippet');
+    if (!el || !supabaseUrl) return;
+    el.textContent = `const DASHBOARD_CONFIG = {\n  autoConnect: {\n    url: '${supabaseUrl}',\n    key: '${anonKey.slice(0,20)}...'\n  }\n};`;
+  }
+
+  loadSettings();
+
+  document.getElementById('btn-settings').addEventListener('click', () => {
+    document.getElementById('settings-panel').classList.toggle('open');
+    updateAutoConnectSnippet();
+  });
+
+  document.getElementById('settings-close').addEventListener('click', () => {
+    document.getElementById('settings-panel').classList.remove('open');
+  });
+
+  // Color picker sync
+  document.getElementById('setting-color').addEventListener('input', function() {
+    document.getElementById('setting-color-hex').value = this.value;
+  });
+  document.getElementById('setting-color-hex').addEventListener('input', function() {
+    const hex = this.value;
+    if (/^#[0-9a-fA-F]{6}$/.test(hex)) {
+      document.getElementById('setting-color').value = hex;
+    }
+  });
+
+  document.getElementById('settings-save').addEventListener('click', () => {
+    const title = document.getElementById('setting-title').value.trim() || 'PoorJar';
+    const color = document.getElementById('setting-color-hex').value.trim();
+    const days = parseInt(document.getElementById('setting-days').value);
+    const s = { title, color, days };
+    localStorage.setItem('pj_settings', JSON.stringify(s));
+    if (title) {
+      document.title = title + ' — PoorJar';
+      document.querySelectorAll('.topbar-logo-text').forEach(el => el.textContent = title);
+    }
+    if (/^#[0-9a-fA-F]{6}$/.test(color)) applyAccentColor(color);
+    activeDays = days;
+    renderAll();
+    const btn = document.getElementById('settings-save');
+    btn.textContent = '✓ Saved';
+    setTimeout(() => { btn.textContent = 'Save settings'; }, 1500);
+  });
+
+  document.getElementById('settings-copy-link').addEventListener('click', () => {
+    const url = buildShareUrl();
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.getElementById('settings-copy-link');
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => { btn.textContent = '⬡ Copy dashboard link'; }, 2000);
+    }).catch(() => { prompt('Copy your dashboard link:', buildShareUrl()); });
+  });
+
   document.getElementById('btn-share').addEventListener('click', () => {
     const url = buildShareUrl();
     navigator.clipboard.writeText(url).then(() => {
@@ -1104,9 +1486,11 @@
   let iframeUrl = '';
 
   let currentScale = 1;
+  let previewEnabled = true;
 
-  function updateIframe(url, fullHeight) {
+  function setIframeSize(fullHeight) {
     const iframe = document.getElementById('heatmap-iframe');
+    const bg = document.getElementById('heatmap-bg');
     const inner = document.getElementById('heatmap-inner');
     const scaleWrap = document.getElementById('heatmap-scale-wrap');
 
@@ -1114,37 +1498,114 @@
     currentScale = containerW / 1440;
     const scaledH = Math.round(fullHeight * currentScale);
 
-    // iframe is 1440px wide, scaled down visually
-    // transform: scale() doesn't affect layout, so we use a spacer div trick:
-    // set the inner wrapper to the scaled pixel dimensions so scrolling works correctly
     iframe.style.width = '1440px';
     iframe.style.height = fullHeight + 'px';
-    // transform-origin top left, scale down to fit container
     iframe.style.transform = 'scale(' + currentScale + ')';
     iframe.style.transformOrigin = 'top left';
     iframe.style.position = 'absolute';
     iframe.style.top = '0';
     iframe.style.left = '0';
 
-    // The inner div acts as the layout spacer — sized to scaled dimensions
+    if (bg) {
+      bg.style.width = containerW + 'px';
+      bg.style.height = scaledH + 'px';
+    }
+
     inner.style.width = containerW + 'px';
     inner.style.height = scaledH + 'px';
     inner.style.position = 'relative';
-
     scaleWrap.style.maxHeight = Math.min(scaledH, 580) + 'px';
+  }
 
-    window.addEventListener('resize', () => updateIframe(iframeUrl, fullHeight));
+  function showIframeFallback(msg) {
+    const iframe = document.getElementById('heatmap-iframe');
+    const bg = document.getElementById('heatmap-bg');
+    iframe.style.display = 'none';
+    if (bg) bg.style.display = 'block';
+    // Remove any existing message
+    const existing = document.getElementById('heatmap-blocked-msg');
+    if (existing) existing.remove();
+    if (msg) {
+      const el = document.createElement('div');
+      el.id = 'heatmap-blocked-msg';
+      el.className = 'heatmap-blocked-msg';
+      el.textContent = msg;
+      document.getElementById('heatmap-inner').appendChild(el);
+    }
+  }
+
+  function showIframePreview() {
+    const iframe = document.getElementById('heatmap-iframe');
+    const bg = document.getElementById('heatmap-bg');
+    iframe.style.display = 'block';
+    if (bg) bg.style.display = 'none';
+    const existing = document.getElementById('heatmap-blocked-msg');
+    if (existing) existing.remove();
+  }
+
+  function updateIframe(url, fullHeight) {
+    setIframeSize(fullHeight);
+    window.addEventListener('resize', () => setIframeSize(fullHeight));
+
+    if (!previewEnabled) {
+      showIframeFallback('Page preview is off');
+      return;
+    }
 
     if (!url || url === iframeUrl) return;
     iframeUrl = url;
-    // Strip any hash so the page loads at the top
     const cleanUrl = url.split('#')[0];
-    iframe.src = cleanUrl;
-    // After load, force scroll back to top (same-origin only, but try anyway)
+
+    const iframe = document.getElementById('heatmap-iframe');
+    showIframePreview();
+
+    // Check embeddability via fetch before loading the iframe.
+    // We can't read X-Frame-Options from a cors-mode fetch, but we CAN
+    // use a Service Worker or just attempt the iframe and catch the error.
+    // Best cross-browser approach: try loading, then use a MessageChannel
+    // ping — if the frame is blocked it stays blank (no load event fires
+    // for X-Frame-Options blocks in Chrome). Set a 5s timeout.
+    let loadFired = false;
+    const embedTimeout = setTimeout(() => {
+      if (!loadFired) showIframeFallback('This site blocks embedding — heatmap only');
+    }, 5000);
+
     iframe.onload = () => {
-      try { iframe.contentWindow.scrollTo(0, 0); } catch(e) {}
+      loadFired = true;
+      clearTimeout(embedTimeout);
+      // Cross-origin frames fire load even when blocked in some browsers,
+      // but the frame will be empty. We can't check contentDocument cross-origin.
+      // If load fired within 5s, assume it worked.
+      showIframePreview();
     };
+
+    iframe.onerror = () => {
+      loadFired = true;
+      clearTimeout(embedTimeout);
+      showIframeFallback('Could not load page preview');
+    };
+
+    iframe.src = cleanUrl;
   }
+
+  // Preview toggle button
+  document.getElementById('btn-preview-toggle').addEventListener('click', () => {
+    previewEnabled = !previewEnabled;
+    const btn = document.getElementById('btn-preview-toggle');
+    btn.textContent = 'Preview: ' + (previewEnabled ? 'ON' : 'OFF');
+    btn.classList.toggle('preview-off', !previewEnabled);
+    if (!previewEnabled) {
+      showIframeFallback(null);
+    } else {
+      // Re-trigger iframe load with current URL
+      const saved = iframeUrl;
+      iframeUrl = '';
+      const pageEvents = filteredEvents.filter(e => e.y);
+      const maxY = pageEvents.length ? Math.max(...pageEvents.map(e => e.y)) : 900;
+      const fullHeight = Math.max(maxY + 200, 900);
+      updateIframe(saved || (filteredEvents.find(e => e.url) || {}).url, fullHeight);
+    }
+  });
 
   // ---- Render everything ----
   function renderAll() {
@@ -1484,5 +1945,60 @@
       .replace(/"/g, '&quot;');
   }
 </script>
+<!-- Settings Panel -->
+<div class="settings-panel" id="settings-panel">
+  <div class="settings-title">
+    Settings
+    <button class="settings-close" id="settings-close">✕</button>
+  </div>
+
+  <div class="settings-group">
+    <div class="settings-group-label">Appearance</div>
+    <div class="settings-row">
+      <span class="settings-label">Dashboard title</span>
+      <input type="text" class="settings-input" id="setting-title" value="PoorJar" maxlength="30"/>
+    </div>
+    <div class="settings-row">
+      <span class="settings-label">Accent color</span>
+      <div class="settings-color-row">
+        <input type="color" class="settings-color-swatch" id="setting-color" value="#4AE3A0" title="Pick accent color"/>
+        <input type="text" class="settings-input" id="setting-color-hex" value="#4AE3A0" maxlength="7" style="width:90px;"/>
+      </div>
+    </div>
+  </div>
+
+  <div class="settings-group">
+    <div class="settings-group-label">Defaults</div>
+    <div class="settings-row">
+      <span class="settings-label">Default date range</span>
+      <select class="settings-input" id="setting-days" style="width:140px;">
+        <option value="7">Last 7 days</option>
+        <option value="30">Last 30 days</option>
+        <option value="0">All time</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="settings-save" id="settings-save">Save settings</button>
+
+  <hr class="settings-divider"/>
+
+  <div class="settings-group">
+    <div class="settings-group-label">Self-host</div>
+    <p class="settings-note">This dashboard is a single HTML file. Download it and host it anywhere — Netlify, GitHub Pages, your own server, or just open it locally.</p>
+    <a href="https://poorjar.com/dashboard/index.html" download="poorjar-dashboard.html" class="settings-save" style="display:block; text-decoration:none; text-align:center; margin-top:12px;">↓ Download dashboard.html</a>
+    <p class="settings-note" style="margin-top:10px;">To pre-configure credentials so the login screen never appears, add this to the top of the script in the downloaded file:</p>
+    <div class="selfhost-code" id="settings-autoconnect-snippet" style="margin-top:6px; font-size:0.65rem;"></div>
+  </div>
+
+  <hr class="settings-divider"/>
+
+  <div class="settings-group">
+    <div class="settings-group-label">Share</div>
+    <p class="settings-note">Copy a pre-connected link — anyone with it can view your dashboard without entering credentials. Only share with people you trust.</p>
+    <button class="settings-save" id="settings-copy-link" style="background:#1a1a1c; color:#4AE3A0; border:1px solid #2a2a2a;">⬡ Copy dashboard link</button>
+  </div>
+</div>
+
 </body>
 </html>
