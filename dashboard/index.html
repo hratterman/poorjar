@@ -395,17 +395,23 @@
       width: 100%;
       box-sizing: border-box;
       padding: 9px;
-      background: var(--accent);
-      color: #000;
+      background: #4AE3A0;
+      color: #0a0a0b;
       border: none;
       border-radius: 6px;
       font-size: 0.8rem;
-      font-weight: 600;
+      font-weight: 700;
       font-family: inherit;
       cursor: pointer;
       margin-top: 8px;
     }
-    .settings-save:hover { opacity: 0.9; }
+    .settings-save:hover { opacity: 0.85; }
+    .settings-save.secondary {
+      background: #1a1a1c;
+      color: #4AE3A0;
+      border: 1px solid #2a2a2a;
+      font-weight: 600;
+    }
     .settings-divider { border: none; border-top: 1px solid #1e1e20; margin: 16px 0; }
     .settings-note { font-size: 0.7rem; color: #444; line-height: 1.6; }
 
@@ -1075,6 +1081,10 @@
         <div class="stat-value" id="stat-pages">--</div>
       </div>
       <div class="stat-card">
+        <div class="stat-label">Avg Session</div>
+        <div class="stat-value" id="stat-avg-session">--</div>
+      </div>
+      <div class="stat-card">
         <div class="stat-label">Rage Clicks</div>
         <div class="stat-value rage-stat" id="stat-rage">--</div>
       </div>
@@ -1219,7 +1229,7 @@
   <div class="settings-group">
     <div class="settings-group-label">Share</div>
     <p class="settings-note">Copy a pre-connected link — anyone with it can view your dashboard without entering credentials. Only share with people you trust.</p>
-    <button class="settings-save" id="settings-copy-link" style="background:#1a1a1c; color:#4AE3A0; border:1px solid #2a2a2a;">⬡ Copy dashboard link</button>
+    <button class="settings-save secondary" id="settings-copy-link">⬡ Copy dashboard link</button>
   </div>
 </div>
 
@@ -1693,10 +1703,35 @@
     const pages = new Set(filteredEvents.map(e => e.url)).size;
     const rages = filteredEvents.filter(e => e.type === 'rage_click').length;
 
+    // Avg session duration: (max_ts - min_ts) per session_id, averaged across sessions
+    // Only count sessions with at least 2 events (single-event sessions = 0 duration)
+    var sessionMap = {};
+    filteredEvents.forEach(function(e) {
+      if (!e.session_id || !e.timestamp) return;
+      if (!sessionMap[e.session_id]) sessionMap[e.session_id] = { min: e.timestamp, max: e.timestamp };
+      if (e.timestamp < sessionMap[e.session_id].min) sessionMap[e.session_id].min = e.timestamp;
+      if (e.timestamp > sessionMap[e.session_id].max) sessionMap[e.session_id].max = e.timestamp;
+    });
+    var durations = Object.values(sessionMap)
+      .map(function(s) { return s.max - s.min; })
+      .filter(function(d) { return d > 0; });
+    var avgMs = durations.length ? durations.reduce(function(a, b) { return a + b; }, 0) / durations.length : 0;
+    var avgLabel = fmtDuration(avgMs);
+
     document.getElementById('stat-sessions').textContent = fmt(sessions);
     document.getElementById('stat-events').textContent = fmt(events);
     document.getElementById('stat-pages').textContent = fmt(pages);
+    document.getElementById('stat-avg-session').textContent = avgLabel;
     document.getElementById('stat-rage').textContent = fmt(rages);
+  }
+
+  function fmtDuration(ms) {
+    if (!ms || ms < 1000) return '< 1s';
+    var s = Math.round(ms / 1000);
+    if (s < 60) return s + 's';
+    var m = Math.floor(s / 60);
+    var rem = s % 60;
+    return m + 'm' + (rem ? ' ' + rem + 's' : '');
   }
 
   // ---- Heatmap ----
