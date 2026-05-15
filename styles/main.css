@@ -1305,3 +1305,66 @@ body {
     padding: 9px 12px;
   }
 }
+
+/* ── Badge section ── */
+.badge-section {
+  padding: var(--space-16) 0;
+  border-top: 1px solid var(--border);
+}
+.badge-inner {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: var(--space-12);
+  align-items: center;
+}
+.badge-right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+.badge-preview {
+  padding: var(--space-5);
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.badge-preview::before {
+  content: 'Preview';
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+  margin-right: auto;
+  display: none;
+}
+.badge-code-wrap {
+  background: var(--bg-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.badge-code-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.badge-code {
+  padding: 12px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: #888;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+@media (max-width: 768px) {
+  .badge-inner { grid-template-columns: 1fr; }
+}

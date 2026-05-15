@@ -7,6 +7,15 @@
   <meta name="description" content="Free, open-source Hotjar alternative. Heatmaps, scroll depth, rage clicks. Your data goes to your own backend. Not ours. Not Microsoft's.">
   <meta property="og:title" content="PoorJar: Open source analytics. Your data, not Microsoft's.">
   <meta property="og:description" content="Free, open-source session analytics. One script tag. Bring your own backend. Your data never touches a third-party server.">
+  <meta property="og:image" content="https://poorjar.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://poorjar.com">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="PoorJar: Open source analytics. Your data, not Microsoft's.">
+  <meta name="twitter:description" content="Free, open-source session analytics. One script tag. Bring your own backend.">
+  <meta name="twitter:image" content="https://poorjar.com/og-image.png">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -226,15 +235,16 @@
             <div class="code-block-body"><span style="color:var(--text-dim);">&lt;!-- Paste this in your &lt;head&gt; --&gt;</span>
 
 <span style="color:#9ECEF5;">&lt;script</span>
-  <span class="code-hl">src</span>=<span style="color:#F2A65A;">"https://henryratterman.com/poorjar/poorjar.js"</span>
-  <span class="code-hl">data-endpoint</span>=<span style="color:#F2A65A;">"https://your-endpoint.supabase.co/..."</span>
+  <span class="code-hl">src</span>=<span style="color:#F2A65A;">"https://poorjar.com/poorjar.js"</span>
+  <span class="code-hl">data-endpoint</span>=<span style="color:#F2A65A;">"https://your-project.supabase.co/rest/v1/poorjar_events"</span>
   <span class="code-hl">data-site-id</span>=<span style="color:#F2A65A;">"your-site-id"</span>
-  async
+  <span class="code-hl">data-mode</span>=<span style="color:#F2A65A;">"supabase"</span>
+  <span class="code-hl">data-key</span>=<span style="color:#F2A65A;">"your-anon-key"</span>
 <span style="color:#9ECEF5;">&gt;&lt;/script&gt;</span>
 
-<span style="color:var(--text-dim);">// That's it. It starts tracking:</span>
-<span style="color:var(--text-dim);">// clicks, scrolls, rage clicks, mouse movement.</span>
-<span style="color:var(--text-dim);">// Batched and sent to your endpoint every 30s.</span></div>
+<span style="color:var(--text-dim);">// No async. No defer. Starts tracking immediately.</span>
+<span style="color:var(--text-dim);">// Clicks, scrolls, rage clicks, dwell spots.</span>
+<span style="color:var(--text-dim);">// Batched and sent to your backend every 5s.</span></div>
           </div>
         </div>
       </div>
@@ -504,6 +514,34 @@
     </div>
   </section>
 
+  <!-- ==================== BADGE ==================== -->
+  <section class="badge-section">
+    <div class="container">
+      <div class="badge-inner">
+        <div>
+          <div class="section-label">Spread the word</div>
+          <h2 class="section-title" style="font-size:1.6rem;">Add a badge to your site</h2>
+          <p class="section-body" style="margin:0;">Optional. Helps other people find PoorJar. One line.</p>
+        </div>
+        <div class="badge-right">
+          <div class="badge-preview">
+            <a href="https://poorjar.com" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:7px; background:#0A0A0B; border:1px solid #2a2a2a; border-radius:8px; padding:7px 13px; text-decoration:none; font-family:system-ui,sans-serif; font-size:13px; color:#fff;">
+              <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" width="16" height="16"><path d="M6 10 L8 26 L24 26 L26 10Z" stroke="#4AE3A0" stroke-width="2" stroke-linejoin="round" fill="none"/><path d="M4 10 L28 10" stroke="#4AE3A0" stroke-width="2" stroke-linecap="round"/><path d="M12 10 L11 5 L21 5 L20 10" stroke="#4AE3A0" stroke-width="1.5" stroke-linejoin="round" fill="none"/><circle cx="13" cy="17" r="1.5" fill="#4AE3A0" opacity="0.7"/><circle cx="17" cy="21" r="1.5" fill="#4AE3A0" opacity="0.7"/></svg>
+              Tracked with PoorJar
+            </a>
+          </div>
+          <div class="badge-code-wrap">
+            <div class="badge-code-header">
+              <span class="config-code-lang">HTML</span>
+              <button class="config-copy-btn" id="btn-copy-badge">Copy</button>
+            </div>
+            <div class="badge-code" id="badge-code-content">&lt;a href="https://poorjar.com" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:7px;background:#0A0A0B;border:1px solid #2a2a2a;border-radius:8px;padding:7px 13px;text-decoration:none;font-family:system-ui,sans-serif;font-size:13px;color:#fff;"&gt;&lt;svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" width="16" height="16"&gt;&lt;path d="M6 10 L8 26 L24 26 L26 10Z" stroke="#4AE3A0" stroke-width="2" stroke-linejoin="round" fill="none"/&gt;&lt;path d="M4 10 L28 10" stroke="#4AE3A0" stroke-width="2" stroke-linecap="round"/&gt;&lt;path d="M12 10 L11 5 L21 5 L20 10" stroke="#4AE3A0" stroke-width="1.5" stroke-linejoin="round" fill="none"/&gt;&lt;circle cx="13" cy="17" r="1.5" fill="#4AE3A0" opacity="0.7"/&gt;&lt;circle cx="17" cy="21" r="1.5" fill="#4AE3A0" opacity="0.7"/&gt;&lt;/svg&gt;Tracked with PoorJar&lt;/a&gt;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ==================== FOOTER ==================== -->
   <footer class="site-footer">
     <div class="container">
@@ -521,7 +559,7 @@
         <div class="footer-links">
           <a href="https://henryratterman.com">henryratterman.com</a>
           <a href="https://github.com/hratterman/poorjar" target="_blank" rel="noopener">GitHub</a>
-          <a href="poorjar.js">poorjar.js</a>
+          <a href="https://poorjar.com/poorjar.js">poorjar.js</a>
         </div>
         <div class="footer-mit">MIT License · No tracking · No servers · No nonsense</div>
         <div class="footer-mit" style="margin-top:8px; color:#444;">
@@ -538,6 +576,17 @@
 
   <!-- App modules -->
   <script src="src/wizard.js"></script>
+  <script>
+    document.getElementById('btn-copy-badge').addEventListener('click', function() {
+      var code = document.getElementById('badge-code-content').textContent
+        .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+      navigator.clipboard.writeText(code).then(function() {
+        var btn = document.getElementById('btn-copy-badge');
+        btn.textContent = 'Copied!';
+        setTimeout(function() { btn.textContent = 'Copy'; }, 2000);
+      });
+    });
+  </script>
 
 </body>
 </html>
