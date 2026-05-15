@@ -22,7 +22,7 @@
 </p>
 
 <p align="center">
-  <i>Built by <a href="https://henryratterman.com">Henry Ratterman</a>, a marketing major at Indiana University who needed heatmaps and wasn't paying $99/month for them.</i>
+  <i>Hotjar wanted $99/month. This is the result.</i>
 </p>
 
 <p align="center">
