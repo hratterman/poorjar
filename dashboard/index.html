@@ -618,6 +618,23 @@
       font-weight: 600;
     }
 
+    .panel-title-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .session-id-chip {
+      font-family: monospace;
+      font-size: 11px;
+      background: #1a1a1c;
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      padding: 2px 6px;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+    }
+
     .toggle-group {
       display: flex;
       gap: 4px;
@@ -1168,6 +1185,30 @@
             <div id="rage-list-wrap"></div>
           </div>
         </div>
+
+        <!-- Sessions -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">Sessions</span>
+            <span class="panel-title-note" id="sessions-count"></span>
+          </div>
+          <div class="panel-body" style="padding:0;">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Session</th>
+                    <th>Duration</th>
+                    <th>Events</th>
+                    <th>Pages</th>
+                    <th>Started</th>
+                  </tr>
+                </thead>
+                <tbody id="sessions-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1694,6 +1735,7 @@
     renderScrollDepth();
     renderTopPages();
     renderRageClicks();
+    renderSessions();
   }
 
   // ---- Stats ----
@@ -2010,6 +2052,53 @@
     wrap.innerHTML = '';
     wrap.appendChild(header);
     wrap.appendChild(list);
+  }
+
+  // ---- Sessions ----
+  function renderSessions() {
+    const tbody = document.getElementById('sessions-tbody');
+    const countEl = document.getElementById('sessions-count');
+
+    // Build per-session summary
+    const sessionMap = {};
+    filteredEvents.forEach(e => {
+      const sid = e.session_id || 'unknown';
+      if (!sessionMap[sid]) {
+        sessionMap[sid] = { id: sid, events: 0, pages: new Set(), minTs: e.timestamp, maxTs: e.timestamp };
+      }
+      const s = sessionMap[sid];
+      s.events++;
+      if (e.url) s.pages.add(e.url);
+      if (e.timestamp && e.timestamp < s.minTs) s.minTs = e.timestamp;
+      if (e.timestamp && e.timestamp > s.maxTs) s.maxTs = e.timestamp;
+    });
+
+    const sessions = Object.values(sessionMap)
+      .sort((a, b) => b.minTs - a.minTs); // most recent first
+
+    countEl.textContent = sessions.length + ' total';
+
+    if (sessions.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; color:var(--text-muted); padding:20px;">No sessions</td></tr>';
+      return;
+    }
+
+    tbody.innerHTML = '';
+    sessions.slice(0, 50).forEach(s => {
+      const tr = document.createElement('tr');
+      const durMs = s.maxTs - s.minTs;
+      const dur = durMs > 0 ? fmtDuration(durMs) : '< 1s';
+      const started = s.minTs ? new Date(s.minTs).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—';
+      const shortId = s.id === 'unknown' ? 'unknown' : s.id.slice(0, 8);
+
+      tr.innerHTML =
+        '<td><span class="session-id-chip" title="' + s.id + '">' + shortId + '</span></td>' +
+        '<td>' + dur + '</td>' +
+        '<td>' + s.events + '</td>' +
+        '<td>' + s.pages.size + '</td>' +
+        '<td style="white-space:nowrap;">' + started + '</td>';
+      tbody.appendChild(tr);
+    });
   }
 
   // ---- Utilities ----
