@@ -5,7 +5,7 @@
 -->
 
 <p align="center">
-  <img src="docs/banner.svg" alt="PoorJar — Analytics for people who won't pay $99/month" width="100%"/>
+  <img src="docs/banner.svg" alt="PoorJar — Open-source session analytics. No server required." width="100%"/>
 </p>
 
 <p align="center">
@@ -17,12 +17,8 @@
 </p>
 
 <p align="center">
-  <b>Hotjar for the rest of us.</b><br/>
-  Free, open-source session analytics. One script tag. Bring your own backend.
-</p>
-
-<p align="center">
-  <i>Hotjar wanted $99/month. This is the result.</i>
+  <b>Open-source session analytics. No server required.</b><br/>
+  Heatmaps, scroll depth, rage clicks. One script tag. Events go straight to a backend you already have.
 </p>
 
 <p align="center">
@@ -31,6 +27,7 @@
   <a href="#dashboard">Dashboard</a> ·
   <a href="#what-it-tracks">What it tracks</a> ·
   <a href="#public-api">Public API</a> ·
+  <a href="#vs-the-alternatives">vs. alternatives</a> ·
   <a href="https://poorjar.com">poorjar.com</a>
 </p>
 
@@ -38,9 +35,11 @@
 
 ## What it is
 
-PoorJar is a lightweight analytics script that tracks how people actually use your site. Click heatmaps, scroll depth, rage clicks, dwell spots. Under 5KB, no external dependencies, works anywhere you can paste a `<script>` tag.
+PoorJar is a behavioral analytics script. Paste one script tag, pick a backend you already have (Supabase, Google Sheets, any POST endpoint), and it starts tracking clicks, scroll depth, and rage clicks. Under 5KB, no dependencies.
 
-The difference from Hotjar: you own your data. Every event goes directly from your visitor's browser to your own database. PoorJar.com never sees it.
+The core decision: there is no PoorJar server. Events go from your visitor's browser directly to your backend. PoorJar.com is never in the loop.
+
+This makes setup fast and keeps infrastructure minimal. It also means the data is yours from the start, not exported from someone else's platform later.
 
 ---
 
@@ -271,6 +270,29 @@ If you don't want to load the script from poorjar.com, serve it yourself:
 ```
 
 The script has no hardcoded URLs. It reads everything from `data-*` attributes.
+
+---
+
+## vs. the alternatives
+
+Every behavioral analytics tool makes a choice about where data lives and who runs the infrastructure. Here is where PoorJar sits:
+
+| Tool | Cost | Data goes to | Server to run? |
+|---|---|---|---|
+| Hotjar | $99+/month | Hotjar | No |
+| Microsoft Clarity | Free | Microsoft | No |
+| OpenReplay | Free (self-hosted) | Your server | Yes |
+| **PoorJar** | **Free** | **Your database** | **No** |
+
+**Hotjar / FullStory:** Full-featured, polished, expensive. Worth it if the budget is there.
+
+**Microsoft Clarity:** Free and genuinely good. Microsoft uses your data to train models. That's the deal. Fine for many projects, not fine for some.
+
+**OpenReplay:** Open source with session replay (PoorJar doesn't have this yet). Requires deploying and running a server. Good choice if you want more features and are willing to maintain infrastructure.
+
+**PoorJar:** No session replay yet. No server on either end. Events go from the browser to a table in your Supabase project or a Google Sheet. That's the whole thing. Smaller scope, zero infrastructure.
+
+If you need session replay today, use OpenReplay. If you want click heatmaps and scroll data without running anything, that's what PoorJar does.
 
 ---
 
