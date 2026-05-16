@@ -196,11 +196,33 @@ CREATE POLICY "allow insert" ON poorjar_events FOR INSERT WITH CHECK (true);</di
     } else if (selectedBackend === 'sheets') {
       container.innerHTML = `
         <div class="config-instructions">
-          <h4>Set up Google Sheets (this one's a bit janky but it works)</h4>
-          <ol>
-            <li>Create a new Google Sheet. The column headers in row 1 should be: session_id, type, x, y, scroll_y, timestamp, url, site_id</li>
-            <li>Open <strong>Extensions &gt; Apps Script</strong> and paste this code:</li>
-          </ol>
+          <h4>Set up Google Sheets</h4>
+          <p class="config-note">Your data ends up in a Google Sheet in your own Drive. Nothing goes through PoorJar. Takes about 5 minutes.</p>
+
+          <div class="config-step">
+            <div class="config-step-num">1</div>
+            <div class="config-step-body">
+              <strong>Create a new Google Sheet.</strong>
+              Go to <a href="https://sheets.new" target="_blank" rel="noopener">sheets.new</a> to open a blank sheet. Give it any name you want. Leave it empty — the script will create the headers automatically.
+            </div>
+          </div>
+
+          <div class="config-step">
+            <div class="config-step-num">2</div>
+            <div class="config-step-body">
+              <strong>Open Apps Script.</strong>
+              In your sheet, click <strong>Extensions</strong> in the top menu, then <strong>Apps Script</strong>. A new tab opens with a code editor. Delete whatever is already there.
+            </div>
+          </div>
+
+          <div class="config-step">
+            <div class="config-step-num">3</div>
+            <div class="config-step-body">
+              <strong>Paste this code.</strong>
+              Copy the whole block below and paste it into the editor, then hit the save icon (or Cmd/Ctrl+S).
+            </div>
+          </div>
+
           <div class="config-code-snippet">function doPost(e) {
   try {
     var data = JSON.parse(e.postData.contents);
@@ -231,10 +253,33 @@ CREATE POLICY "allow insert" ON poorjar_events FOR INSERT WITH CHECK (true);</di
       .setMimeType(ContentService.MimeType.JSON);
   }
 }</div>
-          <ol start="3">
-            <li>Click <strong>Deploy &gt; New deployment</strong>. Type: Web app. Execute as: Me. Who has access: Anyone. Click Deploy.</li>
-            <li>Copy the web app URL and paste it below.</li>
-          </ol>
+
+          <div class="config-step">
+            <div class="config-step-num">4</div>
+            <div class="config-step-body">
+              <strong>Deploy as a web app.</strong>
+              Click the blue <strong>Deploy</strong> button in the top right, then <strong>New deployment</strong>.
+              <ul class="config-substeps">
+                <li>Click the gear icon next to "Type" and select <strong>Web app</strong></li>
+                <li>Set <strong>Execute as</strong> to <strong>Me</strong></li>
+                <li>Set <strong>Who has access</strong> to <strong>Anyone</strong></li>
+                <li>Click <strong>Deploy</strong></li>
+              </ul>
+              Google will ask you to authorize the app. Click through — it's your own script accessing your own sheet.
+            </div>
+          </div>
+
+          <div class="config-step">
+            <div class="config-step-num">5</div>
+            <div class="config-step-body">
+              <strong>Copy the web app URL.</strong>
+              After deploying, Google shows you a URL that looks like:<br/>
+              <code>https://script.google.com/macros/s/LONG_ID/exec</code><br/>
+              Copy that URL and paste it in the field below.
+            </div>
+          </div>
+
+          <p class="config-note" style="margin-top:1rem;">Every time someone visits your site, PoorJar batches their events and sends them to this URL. Your Apps Script receives them and appends rows to your sheet. That's the whole system.</p>
         </div>
         <div class="config-form">
           <div class="form-field">
